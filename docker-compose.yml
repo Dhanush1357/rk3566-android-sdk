@@ -1,0 +1,19 @@
+version: "3.8"
+
+services:
+  rk3566_android:
+    container_name: rk3566_android11
+    image: rk3566_android_sdk
+    platform: ${ANDROID_PLATFORM:-}
+    build:
+      context: .
+      dockerfile: Dockerfile
+    privileged: true
+    stdin_open: true
+    tty: true
+    environment:
+      - DEBIAN_FRONTEND=noninteractive
+      - LANG=en_US.UTF-8
+    volumes:
+      - ./tspi_android_sdk_20230909:/home/sdk/android11
+    working_dir: /home/sdk
