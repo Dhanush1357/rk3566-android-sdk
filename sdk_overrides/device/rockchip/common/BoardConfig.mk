@@ -128,6 +128,7 @@ BOARD_USES_METADATA_PARTITION ?= true
 # Add standalone odm partition configrations
 TARGET_COPY_OUT_ODM := odm
 BOARD_ODMIMAGE_FILE_SYSTEM_TYPE ?= ext4
+TARGET_SCREEN_NO_BOOTANIMATION := true
 
 # Add standalone vendor partition configrations
 TARGET_COPY_OUT_VENDOR := vendor

@@ -29,10 +29,10 @@
 #include "tspi-rk3566-core-v10.dtsi"
 
 //【开/关】EDP 显示屏幕配置，用户可以基于此复制自己的屏幕，注意EDP与MIPI屏幕互斥，因为共用了VOP如果需要同显自行修改
-#include "tspi-rk3566-edp-v10.dtsi"
+// #include "tspi-rk3566-edp-v10.dtsi"
 
 //【开/关】mipi 显示屏幕配置，用户可以基于此复制自己的屏幕，注意EDP与MIPI屏幕互斥，因为共用了VOP如果需要同显自行修改
-// #include "tspi-rk3566-dsi-v10.dtsi"
+#include "tspi-rk3566-dsi-v10.dtsi"
 
 //【开/关】HDMI 显示屏幕配置，里面内容几乎可以不用动，如果不需要hdmi显示直接注释掉即可
 #include "tspi-rk3566-hdmi-v10.dtsi"
@@ -200,4 +200,33 @@
 			<0xe6	KEY_0>;
 	};
 };
+
+&cluster0 {
+	status = "okay";
+};
+
+&cluster0_win0 {
+	status = "okay";
+};
+
+&smart0 {
+	status = "disabled";
+};
+
+&smart1 {
+	status = "disabled";
+};
+
+&smart0_win0 {
+	status = "disabled";
+};
+
+&smart1_win0 {
+	status = "disabled";
+};
+
+&vp1 {
+	rockchip,plane-mask = <0x01>;
+};
+
 
