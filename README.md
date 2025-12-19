@@ -16,9 +16,17 @@ Before getting started, ensure you have the following installed on your host mac
 rk3566_android_sdk/
 ├── Dockerfile
 ├── docker-compose.yml
+├── apply_overrides.sh            # Applies tracked overrides onto vendor SDK
+├── sdk_overrides/                # Version-controlled overrides only
 ├── tspi_android_sdk_20230909/   # Android SDK source (host-mounted)
 └── README.md
 ```
+
+> [!IMPORTANT]
+>
+> - tspi_android_sdk_20230909/ must NOT be committed to git
+> - sdk_overrides/ contains only files that are modified
+> - Directory structure inside sdk_overrides/ mirrors the SDK exactly
 
 ## Platform Handling (Important)
 
@@ -93,6 +101,73 @@ This maps to:
 `./tspi_android_sdk_20230909` (on host)
 
 Changes are reflected instantly on both sides.
+
+## SDK Overrides Workflow (IMPORTANT)
+
+This repository uses a file overlay (override) workflow to manage SDK customizations without modifying or version-controlling the entire vendor SDK.
+
+#### Key Principles
+
+- The vendor SDK is treated as read-only input
+- All customizations live in sdk_overrides/
+- During container startup, overrides are copied over the SDK
+- Builds always use the effective merged tree
+
+#### How Overrides Work
+
+- Files inside sdk_overrides/ must follow the same relative path as the SDK
+- During container startup, apply_overrides.sh runs:
+- It copies override files into /home/sdk/android11
+- Existing SDK files are overwritten intentionally
+
+```
+# Example
+SDK file:
+kernel/arch/arm64/configs/tspi_defconfig
+
+Override file:
+sdk_overrides/kernel/arch/arm64/configs/tspi_defconfig
+```
+
+#### Adding a New Override (Example)
+
+- Copy the vendor baseline (first time only)
+
+```
+$ mkdir -p sdk_overrides/kernel/arch/arm64/configs
+$ cp tspi_android_sdk_20230909/kernel/arch/arm64/configs/tspi_defconfig sdk_overrides/kernel/arch/arm64/configs/
+```
+
+- Commit this baseline snapshot
+
+```
+$ git add sdk_overrides/kernel/arch/arm64/configs/tspi_defconfig
+$ git commit -m "kernel: import tspi_defconfig baseline (vendor)"
+```
+
+This commit represents the exact vendor state and should not contain functional changes.
+
+- Apply custom modifications & commit
+
+```
+$ vim sdk_overrides/kernel/arch/arm64/configs/tspi_defconfig
+$ git commit -am "kernel: enable AFBC, VOP2 cluster, display config"
+```
+
+#### Deployment in server for builds.
+
+- Pull the latest code
+
+```
+$ cd rk3566-android-sdk
+$ git pull
+```
+
+- Restart/start the container
+
+```
+$ docker compose restart
+```
 
 ## SDK Directory Structure
 
