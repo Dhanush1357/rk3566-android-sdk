@@ -70,8 +70,6 @@
 /* usb mass storage */
 #define CONFIG_USB_FUNCTION_MASS_STORAGE
 #define CONFIG_ROCKUSB_G_DNL_PID 0x350a
-
-#define CONFIG_DM_VIDEO
 #define CONFIG_VIDEO_BMP_LOGO
 
 #define ENV_MEM_LAYOUT_SETTINGS                                                \
