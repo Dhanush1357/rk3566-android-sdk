@@ -17,5 +17,6 @@ services:
     volumes:
       - ./tspi_android_sdk_20230909:/home/sdk/android11
       - ./sdk_overrides:/home/sdk/sdk_overrides
-    command: bash -c "chmod +x ./apply_overrides.sh && ./apply_overrides.sh && bash"
+      - ./apply_overrides.sh:/home/sdk/apply_overrides.sh:ro
+    command: bash -c "./apply_overrides.sh && bash"
     working_dir: /home/sdk
