@@ -214,6 +214,13 @@ $ docker compose restart
 
 Among these directories, we often modify the `u-boot`, `kernel`, `vendor`, `system`, `device`, `frameworks`, and `packages` directories.
 
+### Important files & configs path
+
+- `BoardConfig.mk` - device/rockchip/rk356x
+- `rk356x.config` - kernel/kernel/configs
+- `android-11.config` - kernel/kernel/configs or kernel/configs/rockchip/
+- `fragmented configs` - kernel/arch/arm64/configs/
+
 ## Full SDK Compilation (Recommended Flow)
 
 ### Build U-Boot
