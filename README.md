@@ -227,9 +227,6 @@ Among these directories, we often modify the `u-boot`, `kernel`, `vendor`, `syst
 
 ```bash
 # once per terminal
-cd u-boot
-./make.sh rk3566
-
 # If you open a new terminal window, you need to first configure the environment. Run this command once, and it will remain active as long as you don't close the window:
 source build/envsetup.sh
 lunch rk3566_tspi-userdebug
