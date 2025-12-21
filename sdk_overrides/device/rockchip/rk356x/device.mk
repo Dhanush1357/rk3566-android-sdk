@@ -66,8 +66,7 @@ PRODUCT_COPY_FILES += vendor/rockchip/common/phone/etc/apns-full-conf.xml:system
 PRODUCT_COPY_FILES += vendor/rockchip/common/phone/etc/spn-conf.xml:system/etc/spn-conf.xml
 PRODUCT_PROPERTY_OVERRIDES += \
     ro.product.ota.host = www.rockchip.com:2300 \
-    ro.vendor.sdkversion = $(CURRENT_SDK_VERSION) \
-    vendor.gralloc.disable_afbc = 0
+    ro.vendor.sdkversion = $(CURRENT_SDK_VERSION)
 
 PRODUCT_COPY_FILES += \
     $(LOCAL_PATH)/public.libraries.txt:vendor/etc/public.libraries.txt
@@ -106,3 +105,7 @@ PRODUCT_PACKAGES += \
 	rkaiq_3A_server
 PRODUCT_COPY_FILES += \
 	external/camera_engine_rkaiq/rkisp2x_tuner/reset_camera.sh:$(TARGET_COPY_OUT_VENDOR)/etc/camera/reset_camera.sh
+
+PRODUCT_VENDOR_PROPERTIES += \
+    vendor.gralloc.disable_afbc = 1
+
