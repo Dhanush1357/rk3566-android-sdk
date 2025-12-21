@@ -228,5 +228,26 @@
     status = "disabled";
 };
 
+&i2c1 {
+    status = "okay";
+
+    gt911: touchscreen@5d {
+        compatible = "goodix,gt911";
+        reg = <0x5d>;
+
+        interrupt-parent = <&gpio1>;
+        interrupts = <0 IRQ_TYPE_EDGE_FALLING>;   // gpio-32
+
+        reset-gpios = <&gpio1 1 GPIO_ACTIVE_LOW>; // gpio-33
+        irq-gpios   = <&gpio1 0 GPIO_ACTIVE_LOW>;
+
+        touchscreen-size-x = <800>;
+        touchscreen-size-y = <1280>;
+
+        status = "okay";
+    };
+};
+
+
 
 
