@@ -230,15 +230,10 @@
 
 &i2c1 {
     status = "okay";
-	pinctrl-names = "default";
-    pinctrl-0 = <&i2c1m1_xfer>;
 
     gt911: touchscreen@5d {
         compatible = "goodix,gt911";
         reg = <0x5d>;
-
-        pinctrl-names = "default";
-        pinctrl-0 = <&touch_int &touch_rst>;
 
         interrupt-parent = <&gpio1>;
         interrupts = <0 IRQ_TYPE_EDGE_FALLING>;
