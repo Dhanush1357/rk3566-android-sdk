@@ -32,6 +32,8 @@
 #include <drm/drm_crtc.h>
 #include <drm/drm_mipi_dsi.h>
 #include <drm/drm_panel.h>
+#include <linux/printk.h>
+
 
 #include <video/display_timing.h>
 #include <video/mipi_display.h>
@@ -566,7 +568,7 @@ static int panel_simple_unprepare(struct drm_panel *panel)
 
 static int panel_simple_prepare(struct drm_panel *panel)
 {
-	struct panel_simple *p = to_panel_simple(panel);
+	/*struct panel_simple *p = to_panel_simple(panel);
 	int err;
 
 	if (p->prepared)
@@ -575,10 +577,43 @@ static int panel_simple_prepare(struct drm_panel *panel)
 	err = panel_simple_regulator_enable(p);
 	if (err < 0) {
 		dev_err(panel->dev, "failed to enable supply: %d\n", err);
-		return err;
-	}
+		return err;*/
+	static int panel_simple_prepare(struct drm_panel *panel)
+{
+    struct panel_simple *p = to_panel_simple(panel);
+    struct mipi_dsi_device *dsi = to_mipi_dsi_device(p->dev);
+    int ret;
 
-	gpiod_direction_output(p->enable_gpio, 1);
+    dev_info(p->dev,
+        "panel_simple_prepare: forcing DCS MADCTL test\n");
+
+    /* Re-send sleep out */
+    ret = mipi_dsi_dcs_exit_sleep_mode(dsi);
+    if (ret)
+        dev_err(p->dev, "Sleep out failed: %d\n", ret);
+
+    msleep(120);
+
+    /*
+     * FORCE COLOR ORDER CHANGE
+     * 0x00 = RGB
+     * 0x08 = BGR
+     * This MUST visibly change colors if Linux owns panel
+     */
+    ret = mipi_dsi_dcs_write(dsi,
+                             MIPI_DCS_SET_ADDRESS_MODE,
+                             (u8[]){0x08}, 1);
+    if (ret)
+        dev_err(p->dev, "MADCTL write failed: %d\n", ret);
+
+    /* Display ON again */
+    ret = mipi_dsi_dcs_set_display_on(dsi);
+    if (ret)
+        dev_err(p->dev, "Display ON failed: %d\n", ret);
+
+    return 0;
+
+	/*gpiod_direction_output(p->enable_gpio, 1);
 
 	if (p->desc->delay.prepare)
 		panel_simple_sleep(p->desc->delay.prepare);
@@ -604,7 +639,7 @@ static int panel_simple_prepare(struct drm_panel *panel)
 
 	p->prepared = true;
 
-	return 0;
+	return 0;*/
 }
 
 static int panel_simple_enable(struct drm_panel *panel)
@@ -3500,5 +3535,5 @@ static void __exit panel_simple_exit(void)
 module_exit(panel_simple_exit);
 
 MODULE_AUTHOR("Thierry Reding <treding@nvidia.com>");
-MODULE_DESCRIPTION("DRM Driver for Simple Panels");
+MODULE_DESCRIPTION("DRM Driver for custom  Simple Panels");
 MODULE_LICENSE("GPL and additional rights");
