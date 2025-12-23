@@ -241,8 +241,6 @@
         max-x = <800>;
         max-y = <1280>;
 		tp-size = <89>;
-		touchscreen-swapped-x-y;
-        touchscreen-inverted-x;
     };
 };
 
