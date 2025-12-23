@@ -35,7 +35,7 @@
 #include "tspi-rk3566-dsi-v10.dtsi"
 
 //【开/关】HDMI 显示屏幕配置，里面内容几乎可以不用动，如果不需要hdmi显示直接注释掉即可
-// #include "tspi-rk3566-hdmi-v10.dtsi"
+#include "tspi-rk3566-hdmi-v10.dtsi"
 
 //【开/关】摄像头 目前视频的是ov5659
 #include "tspi-rk3566-csi-v10.dtsi"
@@ -222,7 +222,7 @@
     status = "okay";
 };
 &route_hdmi {
-    status = "disabled";
+    status = "okay";
 };
 &route_edp {
     status = "disabled";
