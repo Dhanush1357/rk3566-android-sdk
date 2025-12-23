@@ -65,7 +65,8 @@
 			framebuffer = <800 1280>;
 			refresh = <60>;
 			bpc = <8>;
-			format = "rgb";
+			format = "bgr";
+			rotation = <90>;
 		};
 	};
 
@@ -240,9 +241,9 @@
 
         max-x = <800>;
         max-y = <1280>;
-        tp-size = <89>;
 
 		swap-xy;
+		invert-y;
     };
 };
 
