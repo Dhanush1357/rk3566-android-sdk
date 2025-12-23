@@ -231,22 +231,19 @@
 &i2c1 {
     status = "okay";
 
-    gt911: touchscreen@5d {
-        compatible = "goodix,gt911";
+    ts@5d {
+        compatible = "goodix,gt9xx";
         reg = <0x5d>;
 
-        interrupt-parent = <&gpio1>;
-        interrupts = <0 IRQ_TYPE_EDGE_FALLING>;
+        touch-gpio = <&gpio1 RK_PA0 IRQ_TYPE_LEVEL_LOW>;
+        reset-gpio = <&gpio1 RK_PA1 GPIO_ACTIVE_LOW>;
 
-        reset-gpios = <&gpio1 1 GPIO_ACTIVE_LOW>;
-        irq-gpios   = <&gpio1 0 GPIO_ACTIVE_LOW>;
-
-        touchscreen-size-x = <800>;
-        touchscreen-size-y = <1280>;
-
-        status = "okay";
+        max-x = <1280>;
+        max-y = <800>;
+        tp-size = <89>;
     };
 };
+
 
 &pinctrl {
     touch {
