@@ -66,7 +66,6 @@
 			refresh = <60>;
 			bpc = <8>;
 			format = "rgb";
-			rotation = <90>;
 		};
 	};
 
@@ -229,24 +228,21 @@
     status = "disabled";
 };
 
-&i2c1 {
-    status = "okay";
+ts@5d {
+    compatible = "goodix,gt9xx";
+    reg = <0x5d>;
 
-    ts@5d {
-        compatible = "goodix,gt9xx";
-        reg = <0x5d>;
+    interrupt-parent = <&gpio1>;
+    interrupts = <RK_PA0 IRQ_TYPE_LEVEL_LOW>;
+    reset-gpios = <&gpio1 RK_PA1 GPIO_ACTIVE_LOW>;
 
-        touch-gpio = <&gpio1 RK_PA0 IRQ_TYPE_LEVEL_LOW>;
-        reset-gpio = <&gpio1 RK_PA1 GPIO_ACTIVE_LOW>;
+    touchscreen-size-x = <800>;
+    touchscreen-size-y = <1280>;
 
-        max-x = <800>;
-        max-y = <1280>;
-		tp-size = <89>;
-
-		swap-xy;
-		invert-y;
-    };
+    touchscreen-swapped-x-y;
+    touchscreen-inverted-x;
 };
+
 
 
 &pinctrl {
@@ -260,8 +256,3 @@
         };
     };
 };
-
-
-
-
-
