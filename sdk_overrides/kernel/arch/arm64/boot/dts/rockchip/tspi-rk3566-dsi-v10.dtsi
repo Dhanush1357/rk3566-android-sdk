@@ -121,6 +121,7 @@
 		)>;
 		dsi,format = <MIPI_DSI_FMT_BGR888>;
 		bus-format = <MEDIA_BUS_FMT_BGR888_1X24>;
+		rockchip,swap-rb;
 		dsi,lanes  = <4>;
 		panel-init-sequence = [
 			15 00 02 E0 00
