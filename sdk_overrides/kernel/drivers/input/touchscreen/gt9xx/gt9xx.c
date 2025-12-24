@@ -1383,8 +1383,9 @@ static s32 gtp_get_info(struct goodix_ts_data *ts)
         return FAIL;
     }
     
-    ts->abs_x_max = (opr_buf[3] << 8) + opr_buf[2];
-    ts->abs_y_max = (opr_buf[5] << 8) + opr_buf[4];
+    /* Ignore IC resolution, use DTS values */
+    GTP_INFO("Ignore IC resolution, use DTS: X=%d Y=%d",
+             ts->abs_x_max, ts->abs_y_max);
     
     opr_buf[0] = (u8)((GTP_REG_CONFIG_DATA+6) >> 8);
     opr_buf[1] = (u8)((GTP_REG_CONFIG_DATA+6) & 0xFF);
@@ -2095,8 +2096,8 @@ static s8 gtp_request_input_dev(struct i2c_client *client,
     input_set_capability(ts->input_dev, EV_KEY, KEY_POWER);
 #endif 
 
-	if (gtp_change_x2y)
-		GTP_SWAP(ts->abs_x_max, ts->abs_y_max);
+	// if (gtp_change_x2y)
+	// 	GTP_SWAP(ts->abs_x_max, ts->abs_y_max);
 
 #if defined(CONFIG_CHROME_PLATFORMS)
     input_set_abs_params(ts->input_dev, ABS_X, 0, ts->abs_x_max, 0, 0);
@@ -2716,12 +2717,12 @@ static int goodix_ts_probe(struct i2c_client *client, const struct i2c_device_id
     	dev_err(&client->dev, "no max-x defined\n");
     	return -EINVAL;
     }
-    //ts->abs_x_max = val;
+    ts->abs_x_max = val;
     if (of_property_read_u32(np, "max-y", &val)) {
     	dev_err(&client->dev, "no max-y defined\n");
     	return -EINVAL;
     }
-    //ts->abs_y_max = val;
+    ts->abs_y_max = val;
     if (of_property_read_u32(np, "configfile-num", &val)) {
 	    ts->cfg_file_num = 0;
     } else {
