@@ -32,8 +32,6 @@
 #include <drm/drm_crtc.h>
 #include <drm/drm_mipi_dsi.h>
 #include <drm/drm_panel.h>
-#include <linux/printk.h>
-
 
 #include <video/display_timing.h>
 #include <video/mipi_display.h>
@@ -578,6 +576,7 @@ static int panel_simple_prepare(struct drm_panel *panel)
 	if (err < 0) {
 		dev_err(panel->dev, "failed to enable supply: %d\n", err);
 		return err;
+	}
 
 	gpiod_direction_output(p->enable_gpio, 1);
 
@@ -3501,5 +3500,5 @@ static void __exit panel_simple_exit(void)
 module_exit(panel_simple_exit);
 
 MODULE_AUTHOR("Thierry Reding <treding@nvidia.com>");
-MODULE_DESCRIPTION("DRM Driver for custom  Simple Panels");
+MODULE_DESCRIPTION("DRM Driver for Simple Panels");
 MODULE_LICENSE("GPL and additional rights");
