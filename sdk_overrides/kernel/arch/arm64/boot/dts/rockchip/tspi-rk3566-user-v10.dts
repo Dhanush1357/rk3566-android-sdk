@@ -238,8 +238,8 @@
         touch-gpio = <&gpio1 RK_PA0 IRQ_TYPE_LEVEL_LOW>;
         reset-gpio = <&gpio1 RK_PA1 GPIO_ACTIVE_LOW>;
 
-        max-x = <800>;
-        max-y = <1280>;
+        max-x = <1280>;
+        max-y = <800>;
 		tp-size = <89>;
     };
 };
