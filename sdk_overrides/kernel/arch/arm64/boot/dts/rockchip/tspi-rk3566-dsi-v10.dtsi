@@ -80,11 +80,11 @@
 };
 
 &dsi1_in_vp0 {
-	status = "okay";
+	status = "disabled";
 };
 
 &dsi1_in_vp1 {
-	status = "disabled";
+	status = "okay";
 };
 
 &video_phy1 {
@@ -93,7 +93,7 @@
 
 &route_dsi1 {
 	status = "okay";//wucaicheng mipi okay
-	connect = <&vp0_out_dsi1>;
+	connect = <&vp1_out_dsi1>;
 };
 
 //默认 8寸800x1280
