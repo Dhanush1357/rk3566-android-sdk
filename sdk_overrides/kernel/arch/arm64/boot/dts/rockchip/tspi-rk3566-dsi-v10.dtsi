@@ -80,11 +80,11 @@
 };
 
 &dsi1_in_vp0 {
-	status = "disabled";
+	status = "okay";
 };
 
 &dsi1_in_vp1 {
-	status = "okay";
+	status = "disabled";
 };
 
 &video_phy1 {
@@ -93,13 +93,13 @@
 
 &route_dsi1 {
 	status = "okay";//wucaicheng mipi okay
-	connect = <&vp1_out_dsi1>;
+	connect = <&vp0_out_dsi1>;
 };
 
 //默认 8寸800x1280
 &dsi1 {
 	status = "okay";
-	rockchip,lane-rate = <500>;
+	rockchip,lane-rate = <480>;
 	dsi1_panel: panel@0 {
 		status = "okay";
 		compatible = "simple-panel-dsi";
@@ -333,9 +333,9 @@
 				clock-frequency = <71000000>;
 				hactive = <800>;
 				vactive = <1280>;
-				hfront-porch = <60>;
+				hfront-porch = <36>;
 				hsync-len = <8>;
-				hback-porch = <48>;
+				hback-porch = <64>;
 				vfront-porch = <15>;
 				vsync-len = <6>;
 				vback-porch = <16>;
