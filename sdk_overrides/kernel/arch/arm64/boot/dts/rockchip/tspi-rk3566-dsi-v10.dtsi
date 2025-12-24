@@ -102,7 +102,7 @@
 	rockchip,lane-rate = <500>;
 	dsi1_panel: panel@0 {
 		status = "okay";
-		compatible = "simple-panel-dsi";
+		compatible = "xht,xht101cs001a1";
 		reset-gpios = <&gpio3 RK_PC1 GPIO_ACTIVE_LOW>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&dsi1_rst_gpio>;

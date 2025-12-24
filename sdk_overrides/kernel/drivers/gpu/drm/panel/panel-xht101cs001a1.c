@@ -33,6 +33,8 @@
 #include <drm/drm_mipi_dsi.h>
 #include <drm/drm_panel.h>
 #include <linux/printk.h>
+#include <drm/drm_mipi_dsi.h>
+
 
 
 #include <video/display_timing.h>
@@ -566,46 +568,40 @@ static int panel_simple_unprepare(struct drm_panel *panel)
 	return 0;
 }
 
-static int panel_simple_prepare(struct drm_panel *panel)
+
+	static int panel_simple_prepare(struct drm_panel *panel)
 {
-	struct panel_simple *p = to_panel_simple(panel);
-	int err;
+    struct panel_simple *p = to_panel_simple(panel);
+	struct mipi_dsi_device *dsi = p->dsi;
+	int ret;
 
-	if (p->prepared)
-		return 0;
+    
 
-	err = panel_simple_regulator_enable(p);
-	if (err < 0) {
-		dev_err(panel->dev, "failed to enable supply: %d\n", err);
-		return err;
+   if (!dsi)
+        return 0;   /* not a DSI panel */
 
-	gpiod_direction_output(p->enable_gpio, 1);
+    dev_info(p->dev, "panel_simple_prepare: DCS test\n");
 
-	if (p->desc->delay.prepare)
-		panel_simple_sleep(p->desc->delay.prepare);
+    ret = mipi_dsi_dcs_exit_sleep_mode(dsi);
+    if (ret)
+        dev_err(p->dev, "Sleep out failed: %d\n", ret);
 
-	gpiod_direction_output(p->reset_gpio, 1);
+    msleep(120);
 
-	if (p->desc->delay.reset)
-		panel_simple_sleep(p->desc->delay.reset);
+    ret = mipi_dsi_dcs_write(dsi,
+                             MIPI_DCS_SET_ADDRESS_MODE,
+                             (u8[]){0x08}, 1);
+    if (ret)
+        dev_err(p->dev, "MADCTL failed: %d\n", ret);
 
-	gpiod_direction_output(p->reset_gpio, 0);
+    ret = mipi_dsi_dcs_set_display_on(dsi);
+    if (ret)
+        dev_err(p->dev, "Display ON failed: %d\n", ret);
 
-	if (p->desc->delay.init)
-		panel_simple_sleep(p->desc->delay.init);
+    return 0;
 
-	if (p->desc->init_seq) {
-		if (p->dsi)
-			panel_simple_xfer_dsi_cmd_seq(p, p->desc->init_seq);
-		else if (p->cmd_type == CMD_TYPE_SPI)
-			err = panel_simple_xfer_spi_cmd_seq(p, p->desc->init_seq);
-		if (err)
-			dev_err(panel->dev, "failed to send init cmds seq\n");
-	}
-
-	p->prepared = true;
-
-	return 0;*/
+	
+	
 }
 
 static int panel_simple_enable(struct drm_panel *panel)
@@ -3459,7 +3455,7 @@ static void panel_simple_dsi_shutdown(struct mipi_dsi_device *dsi)
 	panel_simple_shutdown(&dsi->dev);
 }
 
-static struct mipi_dsi_driver panel_simple_dsi_driver = {
+static struct mipi_dsi_driver xht101_panel_dsi_driver = {
 	.driver = {
 		.name = "panel-simple-dsi",
 		.of_match_table = dsi_of_match,
@@ -3498,8 +3494,9 @@ static void __exit panel_simple_exit(void)
 
 	platform_driver_unregister(&panel_simple_platform_driver);
 }
+module_mipi_dsi_driver(xht101_panel_driver);
 module_exit(panel_simple_exit);
 
 MODULE_AUTHOR("Thierry Reding <treding@nvidia.com>");
-MODULE_DESCRIPTION("DRM Driver for custom  Simple Panels");
+MODULE_DESCRIPTION("DRM Driver for XHT101CS001A1 Panels");
 MODULE_LICENSE("GPL and additional rights");

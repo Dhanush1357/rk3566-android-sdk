@@ -191,5 +191,14 @@ config DRM_PANEL_SITRONIX_ST7789V
 	help
 	  Say Y here if you want to enable support for the Sitronix
 	  ST7789V controller for 240x320 LCD panels
+	  
+
+
+config DRM_PANEL_XHT101CS001A1
+    tristate "XHT101CS001A1 MIPI DSI panel"
+    depends on DRM_MIPI_DSI
+    help
+      DRM panel driver for XHT101CS001A1 LCD panel.
+
 
 endmenu
