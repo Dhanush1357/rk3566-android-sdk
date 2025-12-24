@@ -2095,8 +2095,8 @@ static s8 gtp_request_input_dev(struct i2c_client *client,
     input_set_capability(ts->input_dev, EV_KEY, KEY_POWER);
 #endif 
 
-	// if (gtp_change_x2y)
-	// 	GTP_SWAP(ts->abs_x_max, ts->abs_y_max);
+	if (gtp_change_x2y)
+		GTP_SWAP(ts->abs_x_max, ts->abs_y_max);
 
 #if defined(CONFIG_CHROME_PLATFORMS)
     input_set_abs_params(ts->input_dev, ABS_X, 0, ts->abs_x_max, 0, 0);
@@ -2653,8 +2653,8 @@ static int goodix_ts_probe(struct i2c_client *client, const struct i2c_device_id
 
 	if (val == 89) {
 		m89or101 = TRUE;
-		gtp_change_x2y = TRUE;
-		gtp_x_reverse = FALSE;
+		gtp_change_x2y = FALSE;
+		gtp_x_reverse = TRUE;
 		gtp_y_reverse = TRUE;
 	} else if (val == 101) {
 		m89or101 = FALSE;
