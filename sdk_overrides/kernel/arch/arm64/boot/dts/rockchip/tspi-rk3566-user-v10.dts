@@ -244,8 +244,8 @@
 		
 		/*90 degree clockwise rotation rectification*/
 		goodix,swap-xy = <1>;
-        goodix,invert-x = <1>;
-        goodix,invert-y = <0>;
+        goodix,invert-x = <0>;
+        goodix,invert-y = <1>;
     };
 };
 
