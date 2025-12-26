@@ -99,7 +99,7 @@
 //默认 8寸800x1280
 &dsi1 {
 	status = "okay";
-	rockchip,lane-rate = <480>;
+	rockchip,lane-rate = <500>;
 	dsi1_panel: panel@0 {
 		status = "okay";
 		compatible = "simple-panel-dsi";
@@ -120,8 +120,8 @@
 			MIPI_DSI_MODE_LPM |
 			MIPI_DSI_MODE_EOT_PACKET
 		)>;
-		dsi,format = <MIPI_DSI_FMT_RGB888>;
-		//bus-format = <MEDIA_BUS_FMT_BGR888_1X24>;
+				dsi,format = <MIPI_DSI_FMT_RGB888>;
+
 		dsi,lanes  = <4>;
 		panel-init-sequence = [
 			15 00 02 E0 00
