@@ -241,6 +241,11 @@
         max-x = <1280>;
         max-y = <800>;
 		tp-size = <89>;
+		
+		/*90 degree clockwise rotation rectification*/
+		goodix,swap-xy = <1>;
+        goodix,invert-x = <1>;
+        goodix,invert-y = <0>;
     };
 };
 
