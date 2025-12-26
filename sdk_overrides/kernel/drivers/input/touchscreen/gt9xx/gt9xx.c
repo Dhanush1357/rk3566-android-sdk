@@ -646,7 +646,7 @@ static void goodix_ts_work_func(struct work_struct *work)
                 char *direction[4] = {"Right", "Down", "Up", "Left"};
                 u8 type = ((doze_buf[2] & 0x0F) - 0x0A) + (((doze_buf[2] >> 4) & 0x0F) - 0x0A) * 2;
                 
-                GTP_INFO("%s slide to light up the screen!", direction[type]);
+                GTP_INFO("%s slide to light up the screenfgtp_change!", direction[type]);
                 doze_status = DOZE_WAKEUP;
                 input_report_key(ts->input_dev, KEY_POWER, 1);
                 input_sync(ts->input_dev);
@@ -2672,11 +2672,6 @@ static int goodix_ts_probe(struct i2c_client *client, const struct i2c_device_id
     	return -EINVAL;
     }
     ts->abs_y_max = val;
-    
-/* Portrait display, touch mounted landscape */
-static int gtp_change_x2y = 1;   /* swap X/Y */
-static int gtp_x_reverse  = 0;   /* no mirror */
-static int gtp_y_reverse  = 0;   /* no mirror */
 
 GTP_INFO("GT911 orientation: x2y=%d x_rev=%d y_rev=%d",
          gtp_change_x2y, gtp_x_reverse, gtp_y_reverse);
@@ -2685,7 +2680,7 @@ GTP_INFO("GT911 orientation: x2y=%d x_rev=%d y_rev=%d",
 		m89or101 = TRUE;
 		gtp_change_x2y = TRUE;
 		gtp_x_reverse = FALSE;
-		gtp_y_reverse = TRUE;
+		gtp_y_reverse = FALSE;
 	} else if (val == 101) {
 		m89or101 = FALSE;
 		gtp_change_x2y = TRUE;
