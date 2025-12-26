@@ -40,7 +40,7 @@
 //#include <linux/earlysuspend.h>
 
 #define CONFIG_8_9  0
-#define DEBUG_SWITCH  0
+#define DEBUG_SWITCH  1
 
 //***************************PART1:ON/OFF define*******************************
 #define GTP_CUSTOM_CFG        0

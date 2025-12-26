@@ -238,20 +238,20 @@
         touch-gpio = <&gpio1 RK_PA0 IRQ_TYPE_LEVEL_LOW>;
         reset-gpio = <&gpio1 RK_PA1 GPIO_ACTIVE_LOW>;
 
-        max-x = <800>;
-        max-y = <1280>;
-		tp-size = <9111>;
+        max-x = <1280>;
+        max-y = <800>;
+		tp-size = <89>;
     };
 };
 
 &pinctrl {
     touch {
         touch_int: touch-int {
-            rockchip,pins = <1 RK_PA0 RK_FUNC_GPIO &pcfg_pull_up>;
+            rockchip,pins = <3 RK_PC0 RK_FUNC_GPIO &pcfg_pull_none>;
         };
 
         touch_rst: touch-rst {
-            rockchip,pins = <1 RK_PA1 RK_FUNC_GPIO &pcfg_pull_up>;
+            rockchip,pins = <3 RK_PC1 RK_FUNC_GPIO &pcfg_pull_none>;
         };
     };
 };
