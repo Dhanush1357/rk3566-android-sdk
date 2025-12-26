@@ -432,17 +432,19 @@ static void gtp_touch_down(struct goodix_ts_data* ts,s32 id,s32 x,s32 y,s32 w)
 		if (gtp_y_reverse)
 			y = ts->abs_y_max - y;
 	}
-    /* ================= GT911 touch orientation fix ================= */
-/* Fix: portrait UI, touch rotated 90 degree clockwise */
+/* ===== GT911 touch orientation fix (final) ===== */
 {
     int tx = x;
     int ty = y;
 
-    /* rotate coordinates */
+    /* rotate 90° clockwise */
     x = ty;
     y = ts->abs_x_max - tx;
+
+    /* FIX: invert X axis */
+    x = ts->abs_y_max - x;
 }
-/* =============================================================== */
+/* ============================================== */
 
 
 
