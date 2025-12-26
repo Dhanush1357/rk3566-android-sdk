@@ -374,7 +374,7 @@
 	};
 
 };
-
+//image build check
 // &dsi1 {
 // 	status = "okay";
 // 	rockchip,lane-rate = <1000>;
