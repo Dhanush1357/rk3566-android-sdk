@@ -35,7 +35,7 @@
 #include "tspi-rk3566-dsi-v10.dtsi"
 
 //【开/关】HDMI 显示屏幕配置，里面内容几乎可以不用动，如果不需要hdmi显示直接注释掉即可
-// #include "tspi-rk3566-hdmi-v10.dtsi"
+//#include "tspi-rk3566-hdmi-v10.dtsi"
 
 //【开/关】摄像头 目前视频的是ov5659
 #include "tspi-rk3566-csi-v10.dtsi"
@@ -222,7 +222,7 @@
     status = "okay";
 };
 &route_hdmi {
-    status = "disabled";
+    status = "okay";
 };
 &route_edp {
     status = "disabled";
@@ -231,16 +231,20 @@
 &i2c1 {
     status = "okay";
 
-    ts@5d {
-        compatible = "goodix,gt9xx";
+    gt911: touchscreen@5d {
+        compatible = "goodix,gt911";
         reg = <0x5d>;
 
-        touch-gpio = <&gpio1 RK_PA0 IRQ_TYPE_LEVEL_LOW>;
-        reset-gpio = <&gpio1 RK_PA1 GPIO_ACTIVE_LOW>;
+        interrupt-parent = <&gpio1>;
+        interrupts = <0 IRQ_TYPE_EDGE_FALLING>;
 
-        max-x = <800>;
-        max-y = <1280>;
-		tp-size = <9111>;
+        reset-gpios = <&gpio1 1 GPIO_ACTIVE_LOW>;
+        irq-gpios   = <&gpio1 0 GPIO_ACTIVE_LOW>;
+
+        touchscreen-size-x = <800>;
+        touchscreen-size-y = <1280>;
+
+        status = "okay";
     };
 };
 
@@ -255,3 +259,8 @@
         };
     };
 };
+
+
+
+
+

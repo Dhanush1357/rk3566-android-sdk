@@ -373,7 +373,7 @@
 	};
 
 };
-
+//testing working touchscreen
 // &dsi1 {
 // 	status = "okay";
 // 	rockchip,lane-rate = <1000>;
