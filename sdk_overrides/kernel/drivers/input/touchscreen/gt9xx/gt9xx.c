@@ -433,27 +433,6 @@ static void gtp_touch_down(struct goodix_ts_data* ts,s32 id,s32 x,s32 y,s32 w)
 			y = ts->abs_y_max - y;
 	}
 
-   /* ===== GT911 final orientation + scaling fix ===== */
-{
-    int tx = x;
-    int ty = y;
-
-    /* 1. Rotate 90° clockwise */
-    int rx = ty;
-    int ry = ts->abs_x_max - tx;
-
-    /* 2. Mirror X (as identified from logs) */
-    rx = ts->abs_y_max - rx;
-
-    /* 3. SCALE to panel resolution (CRITICAL) */
-    x = rx * 800  / ts->abs_y_max;   /* DISPLAY_WIDTH  */
-    y = ry * 1280 / ts->abs_x_max;   /* DISPLAY_HEIGHT */
-}
-/* =============================================== */
-
-
-
-
 #if GTP_ICS_SLOT_REPORT
     input_mt_slot(ts->input_dev, id);
     input_report_abs(ts->input_dev, ABS_MT_TRACKING_ID, id);
@@ -1404,9 +1383,8 @@ static s32 gtp_get_info(struct goodix_ts_data *ts)
         return FAIL;
     }
     
-    /* Ignore IC resolution, use DTS values */
-    GTP_INFO("Ignore IC resolution, use DTS: X=%d Y=%d",
-             ts->abs_x_max, ts->abs_y_max);
+    ts->abs_x_max = (opr_buf[3] << 8) + opr_buf[2];
+    ts->abs_y_max = (opr_buf[5] << 8) + opr_buf[4];
     
     opr_buf[0] = (u8)((GTP_REG_CONFIG_DATA+6) >> 8);
     opr_buf[1] = (u8)((GTP_REG_CONFIG_DATA+6) & 0xFF);
@@ -2117,8 +2095,24 @@ static s8 gtp_request_input_dev(struct i2c_client *client,
     input_set_capability(ts->input_dev, EV_KEY, KEY_POWER);
 #endif 
 
-	// if (gtp_change_x2y)
-	// 	GTP_SWAP(ts->abs_x_max, ts->abs_y_max);
+	if (gtp_change_x2y)
+		GTP_SWAP(ts->abs_x_max, ts->abs_y_max);
+/* Enable panel-ready notification */
+static int gtp_init_panel(struct i2c_client *client)
+{
+    struct goodix_ts_data *ts = i2c_get_clientdata(client);
+
+    dev_info(&client->dev, "<gtp_init_panel>_%d <%d, %d>\n",
+             __LINE__, ts->abs_x_max, ts->abs_y_max);
+
+    gtp_gpio_output(ts->pdata->reset_gpio, 0);
+    msleep(20);
+    gtp_gpio_output(ts->pdata->reset_gpio, 1);
+    msleep(100);
+    return 0;
+}
+/*panel init sequence manually added */
+
 
 #if defined(CONFIG_CHROME_PLATFORMS)
     input_set_abs_params(ts->input_dev, ABS_X, 0, ts->abs_x_max, 0, 0);
@@ -2668,10 +2662,28 @@ static int goodix_ts_probe(struct i2c_client *client, const struct i2c_device_id
     	dev_err(&client->dev, "no device tree\n");
     	return -EINVAL;
     }
-    if (of_property_read_u32(np, "tp-size", &val)) {
+    
+    if (of_property_read_u32(np, "max-x", &val)) {
     	dev_err(&client->dev, "no max-x defined\n");
     	return -EINVAL;
     }
+    ts->abs_x_max = val;
+
+    if (of_property_read_u32(np, "max-y", &val)) {
+    	dev_err(&client->dev, "no max-y defined\n");
+    	return -EINVAL;
+    }
+    ts->abs_y_max = val;
+
+    /* ===== GT911 orientation configuration ===== */
+/* Portrait display, touch mounted landscape */
+gtp_change_x2y = 1;
+gtp_x_reverse  = 0;
+gtp_y_reverse  = 0;
+
+GTP_INFO("GT911 orientation: x2y=%d x_rev=%d y_rev=%d",
+         gtp_change_x2y, gtp_x_reverse, gtp_y_reverse);
+/* ========================================== */
 
 	if (val == 89) {
 		m89or101 = TRUE;
@@ -2698,7 +2710,7 @@ static int goodix_ts_probe(struct i2c_client *client, const struct i2c_device_id
 	} else if (val == 9111) {
 		m89or101 = FALSE;
 		bgt9111 = TRUE;
-		gtp_change_x2y = FALSE;
+		gtp_change_x2y = TRUE;
 		gtp_x_reverse = FALSE;
 		gtp_y_reverse = FALSE;
 	} else if (val == 970) {
@@ -2738,12 +2750,12 @@ static int goodix_ts_probe(struct i2c_client *client, const struct i2c_device_id
     	dev_err(&client->dev, "no max-x defined\n");
     	return -EINVAL;
     }
-    ts->abs_x_max = val;
+    //ts->abs_x_max = val;
     if (of_property_read_u32(np, "max-y", &val)) {
     	dev_err(&client->dev, "no max-y defined\n");
     	return -EINVAL;
     }
-    ts->abs_y_max = val;
+    //ts->abs_y_max = val;
     if (of_property_read_u32(np, "configfile-num", &val)) {
 	    ts->cfg_file_num = 0;
     } else {
