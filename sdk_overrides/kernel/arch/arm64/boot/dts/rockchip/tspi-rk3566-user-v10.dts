@@ -243,9 +243,9 @@
 		tp-size = <89>;
 		
 		/*90 degree clockwise rotation rectification*/
-		goodix,swap-xy = <1>;
-        goodix,invert-x = <0>;
-        goodix,invert-y = <1>;
+		touchscreen-swapped-x-y;
+		touchscreen-inverted-y;
+
     };
 };
 
