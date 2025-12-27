@@ -2097,21 +2097,6 @@ static s8 gtp_request_input_dev(struct i2c_client *client,
 
 	if (gtp_change_x2y)
 		GTP_SWAP(ts->abs_x_max, ts->abs_y_max);
-/* Enable panel-ready notification */
-static int gtp_init_panel(struct i2c_client *client)
-{
-    struct goodix_ts_data *ts = i2c_get_clientdata(client);
-
-    dev_info(&client->dev, "<gtp_init_panel>_%d <%d, %d>\n",
-             __LINE__, ts->abs_x_max, ts->abs_y_max);
-
-    gtp_gpio_output(ts->pdata->reset_gpio, 0);
-    msleep(20);
-    gtp_gpio_output(ts->pdata->reset_gpio, 1);
-    msleep(100);
-    return 0;
-}
-/*panel init sequence manually added */
 
 
 #if defined(CONFIG_CHROME_PLATFORMS)
