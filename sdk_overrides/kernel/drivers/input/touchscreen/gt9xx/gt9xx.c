@@ -56,15 +56,15 @@
     #include <linux/input/mt.h>
 #endif
 
-static u8 m89or101 = TRUE;
+static u8 m89or101 = FALSE;
 static u8 bgt911 = FALSE;
 static u8 bgt9110 = FALSE;
-static u8 bgt9111 = FALSE;
+static u8 bgt9111 = TRUE;
 static u8 bgt970 = FALSE;
 static u8 bgt910 = FALSE;
-static u8 gtp_change_x2y = TRUE;
+static u8 gtp_change_x2y = FALSE;
 static u8 gtp_x_reverse = FALSE;
-static u8 gtp_y_reverse = TRUE;
+static u8 gtp_y_reverse = FALSE;
 
 static const char *goodix_ts_name = "goodix-ts";
 static struct workqueue_struct *goodix_wq;
