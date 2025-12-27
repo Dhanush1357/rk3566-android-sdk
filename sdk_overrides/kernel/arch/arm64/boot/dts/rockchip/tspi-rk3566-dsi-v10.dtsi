@@ -373,7 +373,7 @@
 	};
 
 };
-//image build check
+//image-test verification
 // &dsi1 {
 // 	status = "okay";
 // 	rockchip,lane-rate = <1000>;
