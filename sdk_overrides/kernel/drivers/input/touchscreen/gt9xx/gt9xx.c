@@ -425,12 +425,14 @@ static void gtp_touch_down(struct goodix_ts_data* ts,s32 id,s32 x,s32 y,s32 w)
 	if (gtp_change_x2y)
 		GTP_SWAP(x, y);
 
-	if (gtp_x_reverse)
-    x = ts->abs_x_max - x;
+	if (!bgt911 && !bgt970) {
+		if (gtp_x_reverse)
+			x = ts->abs_x_max - x;
 
-if (gtp_y_reverse)
-    y = ts->abs_y_max - y;
-}
+		if (gtp_y_reverse)
+			y = ts->abs_y_max - y;
+	}
+
 #if GTP_ICS_SLOT_REPORT
     input_mt_slot(ts->input_dev, id);
     input_report_abs(ts->input_dev, ABS_MT_TRACKING_ID, id);
