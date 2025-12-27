@@ -2716,12 +2716,12 @@ static int goodix_ts_probe(struct i2c_client *client, const struct i2c_device_id
     	dev_err(&client->dev, "no max-x defined\n");
     	return -EINVAL;
     }
-    //ts->abs_x_max = val;
+    ts->abs_x_max = val;
     if (of_property_read_u32(np, "max-y", &val)) {
     	dev_err(&client->dev, "no max-y defined\n");
     	return -EINVAL;
     }
-    //ts->abs_y_max = val;
+    ts->abs_y_max = val;
     if (of_property_read_u32(np, "configfile-num", &val)) {
 	    ts->cfg_file_num = 0;
     } else {
