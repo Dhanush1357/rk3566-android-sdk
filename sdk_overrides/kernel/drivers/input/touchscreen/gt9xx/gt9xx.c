@@ -433,23 +433,19 @@ static void gtp_touch_down(struct goodix_ts_data* ts,s32 id,s32 x,s32 y,s32 w)
 			y = ts->abs_y_max - y;
 	}
 
-   /* ===== GT911 final orientation + scaling fix ===== */
+    /* ===== GT911 final orientation fix ===== */
 {
     int tx = x;
     int ty = y;
 
-    /* 1. Rotate 90° clockwise */
-    int rx = ty;
-    int ry = ts->abs_x_max - tx;
+    /* rotate 90° clockwise */
+    x = ty;
+    y = ts->abs_x_max - tx;
 
-    /* 2. Mirror X (as identified from logs) */
-    rx = ts->abs_y_max - rx;
-
-    /* 3. SCALE to panel resolution (CRITICAL) */
-    x = rx * 800  / ts->abs_y_max;   /* DISPLAY_WIDTH  */
-    y = ry * 1280 / ts->abs_x_max;   /* DISPLAY_HEIGHT */
+    /* FIX: mirror X axis */
+    x = ts->abs_y_max - x;
 }
-/* =============================================== */
+/* ====================================== */
 
 
 
