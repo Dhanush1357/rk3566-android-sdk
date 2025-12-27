@@ -2664,6 +2664,24 @@ static int goodix_ts_probe(struct i2c_client *client, const struct i2c_device_id
     	dev_err(&client->dev, "no max-x defined\n");
     	return -EINVAL;
     }
+<<<<<<< HEAD
+=======
+    ts->abs_x_max = val;
+
+    if (of_property_read_u32(np, "max-y", &val)) {
+    	dev_err(&client->dev, "no max-y defined\n");
+    	return -EINVAL;
+    }
+    ts->abs_y_max = val;
+    
+/* Portrait display, touch mounted landscape */
+static int gtp_change_x2y = 1;   /* swap X/Y */
+static int gtp_x_reverse  = 0;   /* no mirror */
+static int gtp_y_reverse  = 0;   /* no mirror */
+
+GTP_INFO("GT911 orientation: x2y=%d x_rev=%d y_rev=%d",
+         gtp_change_x2y, gtp_x_reverse, gtp_y_reverse);
+>>>>>>> parent of 0bcd848 (fix: gtp_change val=89 xy=1 x=0, y=0)
 
 	if (val == 89) {
 		m89or101 = TRUE;
