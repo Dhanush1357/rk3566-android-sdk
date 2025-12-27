@@ -2674,14 +2674,16 @@ static int goodix_ts_probe(struct i2c_client *client, const struct i2c_device_id
     	return -EINVAL;
     }
     ts->abs_y_max = val;
-    
+
+    /* ===== GT911 orientation configuration ===== */
 /* Portrait display, touch mounted landscape */
-static int gtp_change_x2y = 1;   /* swap X/Y */
-static int gtp_x_reverse  = 0;   /* no mirror */
-static int gtp_y_reverse  = 0;   /* no mirror */
+gtp_change_x2y = 1;
+gtp_x_reverse  = 0;
+gtp_y_reverse  = 0;
 
 GTP_INFO("GT911 orientation: x2y=%d x_rev=%d y_rev=%d",
          gtp_change_x2y, gtp_x_reverse, gtp_y_reverse);
+/* ========================================== */
 
 	if (val == 89) {
 		m89or101 = TRUE;
