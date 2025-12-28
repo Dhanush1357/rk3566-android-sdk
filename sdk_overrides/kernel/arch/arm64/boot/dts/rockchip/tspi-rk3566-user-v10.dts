@@ -242,9 +242,6 @@
         max-y = <800>;
 		tp-size = <89>;
 		
-		/*90 degree clockwise rotation rectification*/
-		touchscreen-swapped-x-y;
-		touchscreen-inverted-y;
 
     };
 };

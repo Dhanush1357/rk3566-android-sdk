@@ -437,7 +437,8 @@ static void gtp_touch_down(struct goodix_ts_data* ts,s32 id,s32 x,s32 y,s32 w)
     input_mt_slot(ts->input_dev, id);
     input_report_abs(ts->input_dev, ABS_MT_TRACKING_ID, id);
     input_report_abs(ts->input_dev, ABS_MT_POSITION_X, x);
-    input_report_abs(ts->input_dev, ABS_MT_POSITION_Y, y);
+    input_report_abs
+    (ts->input_dev, ABS_MT_POSITION_Y, y);
     input_report_abs(ts->input_dev, ABS_MT_TOUCH_MAJOR, w);
     input_report_abs(ts->input_dev, ABS_MT_WIDTH_MAJOR, w);
 #else
@@ -462,6 +463,12 @@ Output:
     None.
 *********************************************************/
 static void gtp_touch_up(struct goodix_ts_data* ts, s32 id)
+/* ===== FINAL TOUCH FIX (FORCE Y INVERT) ===== */
+y = ts->abs_y_max - y;
+/* =========================================== */
+pr_err("FINAL_TOUCH id=%d x=%d y=%d w=%d\n", id, x, y, w);
+
+
 {
 #if GTP_ICS_SLOT_REPORT
     input_mt_slot(ts->input_dev, id);
