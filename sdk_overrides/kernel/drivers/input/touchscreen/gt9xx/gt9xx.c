@@ -463,10 +463,22 @@ Output:
     None.
 *********************************************************/
 static void gtp_touch_up(struct goodix_ts_data* ts, s32 id)
-/* ===== FINAL TOUCH FIX (FORCE Y INVERT) ===== */
+
+/* ===== FINAL TOUCH FIX (SCALE + INVERT) ===== */
+
+/* Invert Y once */
 y = ts->abs_y_max - y;
-/* =========================================== */
+
+/* Scale X: touch(0..720) → display(0..800) */
+x = x * 800 / ts->abs_x_max;
+
+/* Scale Y: touch(0..1024) → display(0..1280) */
+y = y * 1280 / ts->abs_y_max;
+
 pr_err("FINAL_TOUCH id=%d x=%d y=%d w=%d\n", id, x, y, w);
+
+/* ========================================== */
+
 
 
 {
