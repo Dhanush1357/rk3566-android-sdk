@@ -429,20 +429,8 @@ static void gtp_touch_down(struct goodix_ts_data* ts,s32 id,s32 x,s32 y,s32 w)
 		if (gtp_x_reverse)
 			x = ts->abs_x_max - x;
 	}
-    
-/* ===== FINAL TOUCH FIX ===== */
-
-/* Invert Y once */
-y = ts->abs_y_max - y;
-
-/* Scale to display resolution */
-x = x * 800 / ts->abs_x_max;
-y = y * 1280 / ts->abs_y_max;
-
-pr_err("FINAL_TOUCH id=%d x=%d y=%d w=%d\n", id, x, y, w);
-
-/* =========================== */
-
+    if (gtp_y_reverse)
+			y = ts->abs_y_max - y;
 
 #if GTP_ICS_SLOT_REPORT
     input_mt_slot(ts->input_dev, id);
