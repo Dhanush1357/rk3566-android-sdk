@@ -422,7 +422,7 @@ Output:
 *********************************************************/
 static void gtp_touch_down(struct goodix_ts_data* ts,s32 id,s32 x,s32 y,s32 w)
 {
-	if (gtp_change_x2y)
+	/*if (gtp_change_x2y)
 		GTP_SWAP(x, y);
 
 	if (!bgt911 && !bgt970) {
@@ -431,7 +431,16 @@ static void gtp_touch_down(struct goodix_ts_data* ts,s32 id,s32 x,s32 y,s32 w)
 
 		if (gtp_y_reverse)
 			y = ts->abs_y_max - y;
-	}
+	}*/
+
+    /* ===== TOUCH ROTATION FIX: 90 DEG CLOCKWISE ===== */
+{
+    s32 tx = x;
+    x = y;
+    y = ts->abs_x_max - tx;
+}
+/* =============================================== */
+
 
 #if GTP_ICS_SLOT_REPORT
     input_mt_slot(ts->input_dev, id);
