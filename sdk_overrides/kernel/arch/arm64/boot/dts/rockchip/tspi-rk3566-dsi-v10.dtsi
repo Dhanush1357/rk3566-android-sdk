@@ -374,7 +374,7 @@
 	};
 
 };
-
+//initial build for verification
 // &dsi1 {
 // 	status = "okay";
 // 	rockchip,lane-rate = <1000>;
