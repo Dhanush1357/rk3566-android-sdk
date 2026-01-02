@@ -381,7 +381,7 @@
         compatible = "goodix,gt9xx";
         reg = <0x5d>;
 
-		tp-size = <101>;
+		tp-size = <911>;
         max-x = <800>;
         max-y = <1280>;
 
