@@ -94,6 +94,7 @@
 &route_dsi1 {
 	status = "okay";//wucaicheng mipi okay
 	connect = <&vp1_out_dsi1>;
+	rockchip,disable-afbc;
 };
 
 //默认 8寸800x1280
@@ -371,7 +372,22 @@
 			};
 		};
 	};
+};
 
+&i2c1 {
+    status = "okay";
+
+    ts@5d {
+        compatible = "goodix,gt9xx";
+        reg = <0x5d>;
+
+		tp-size = <101>;
+        max-x = <800>;
+        max-y = <1280>;
+
+        touch-gpio = <&gpio1 RK_PA0 IRQ_TYPE_LEVEL_LOW>;
+        reset-gpio = <&gpio1 RK_PA1 GPIO_ACTIVE_LOW>;
+    };
 };
 
 // &dsi1 {
