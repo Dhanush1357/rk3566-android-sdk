@@ -1452,8 +1452,8 @@ static s32 gtp_init_panel(struct goodix_ts_data *ts)
     }
     
     if (bgt911) {
-    	send_cfg_buf[0] = gtp_dat_gt911;
-		cfg_info_len[0] =  CFG_GROUP_LEN(gtp_dat_gt911);
+    	send_cfg_buf[0] = gtp_dat_gt9111;
+		cfg_info_len[0] =  CFG_GROUP_LEN(gtp_dat_gt9111);
     }
 
     if (bgt9110) {
@@ -1481,16 +1481,12 @@ static s32 gtp_init_panel(struct goodix_ts_data *ts)
         cfg_info_len[0], cfg_info_len[1], cfg_info_len[2], cfg_info_len[3],
         cfg_info_len[4], cfg_info_len[5]);
 
-
-   /* =========================================================
- * FORCE GT911 CONFIG (FINAL OVERRIDE)
- * ========================================================= */
-send_cfg_buf[0] = gtp_dat_gt9111;
-cfg_info_len[0] = CFG_GROUP_LEN(gtp_dat_gt9111);
-GTP_INFO("FORCED GT911 config: gtp_dat_gt9111 (V66)");
-/* ========================================================= */
-     
-
+      /* ================= FORCE GT911 CONFIG ================= */
+    send_cfg_buf[0] = gtp_dat_gt9111;
+    cfg_info_len[0] = CFG_GROUP_LEN(gtp_dat_gt9111);
+    GTP_INFO("FORCED GT911 config: gtp_dat_gt9111 (V66)");
+    /* ===================================================== */
+        
     
 #if GTP_COMPATIBLE_MODE
     if (CHIP_TYPE_GT9F == ts->chip_type)
