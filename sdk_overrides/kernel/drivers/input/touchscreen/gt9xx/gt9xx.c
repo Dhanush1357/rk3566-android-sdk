@@ -72,6 +72,9 @@ struct i2c_client * i2c_connect_client = NULL;
 u8 config[GTP_CONFIG_MAX_LENGTH + GTP_ADDR_LENGTH]
                 = {GTP_REG_CONFIG_DATA >> 8, GTP_REG_CONFIG_DATA & 0xff};
 
+#define GTP_CFG_LENGTH 186
+
+
 #if GTP_HAVE_TOUCH_KEY
     static const u16 touch_key_array[] = GTP_KEY_TAB;
     #define GTP_MAX_KEY_NUM  (sizeof(touch_key_array)/sizeof(touch_key_array[0]))
@@ -332,8 +335,11 @@ Output:
 
 s32 gtp_send_cfg(struct i2c_client *client)
 {
-    {
+    
     int i;
+    s32 ret = 2;
+
+    
     GTP_INFO("GT911 CFG applied (dump):");
     for (i = 0; i < GTP_CONFIG_LENGTH; i++) {
         printk("%02x ", config[i]);
@@ -341,8 +347,8 @@ s32 gtp_send_cfg(struct i2c_client *client)
             printk("\n");
     }
     printk("\n");
-}
-    s32 ret = 2;
+
+    
 
 #if GTP_DRIVER_SEND_CFG
     s32 retry = 0;
