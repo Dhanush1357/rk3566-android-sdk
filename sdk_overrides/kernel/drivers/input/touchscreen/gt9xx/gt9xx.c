@@ -332,6 +332,16 @@ Output:
 
 s32 gtp_send_cfg(struct i2c_client *client)
 {
+    {
+    int i;
+    GTP_INFO("GT911 CFG applied (dump):");
+    for (i = 0; i < GTP_CONFIG_LENGTH; i++) {
+        printk("%02x ", config[i]);
+        if ((i + 1) % 16 == 0)
+            printk("\n");
+    }
+    printk("\n");
+}
     s32 ret = 2;
 
 #if GTP_DRIVER_SEND_CFG
@@ -1445,6 +1455,8 @@ static s32 gtp_init_panel(struct goodix_ts_data *ts)
                               CFG_GROUP_LEN(cfg_info_group6)};;
     
     GTP_INFO("  <%s>_%d \n", __func__, __LINE__);
+    GTP_INFO("GT911 Sensor ID = %d", sensor_id);
+
    
     if(m89or101){
 	    if (ts->cfg_file_num) {
