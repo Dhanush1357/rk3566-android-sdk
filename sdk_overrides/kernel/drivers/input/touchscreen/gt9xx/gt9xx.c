@@ -59,7 +59,7 @@
 static u8 m89or101 = FALSE;
 static u8 bgt911 = FALSE;
 static u8 bgt9110 = FALSE;
-static u8 bgt9111 = TRUE;
+static u8 bgt9111 = FALSE;
 static u8 bgt970 = FALSE;
 static u8 bgt910 = FALSE;
 static u8 gtp_change_x2y = FALSE;
@@ -1623,6 +1623,8 @@ static s32 gtp_init_panel(struct goodix_ts_data *ts)
         GTP_INFO("  <%s>_%d    <%d, %d>\n", __func__, __LINE__, ts->abs_x_max, ts->abs_y_max);
     }
     GTP_INFO("  <%s>_%d \n", __func__, __LINE__);
+    GTP_INFO("Dumping current config (%d bytes):", ts->gtp_cfg_len);
+    GTP_DEBUG_ARRAY(config + GTP_ADDR_LENGTH, ts->gtp_cfg_len);
 #if GTP_COMPATIBLE_MODE
     if (CHIP_TYPE_GT9F == ts->chip_type)
     {
@@ -2659,8 +2661,8 @@ static int goodix_ts_probe(struct i2c_client *client, const struct i2c_device_id
 		gtp_y_reverse = TRUE;
 	} else if (val == 101) {
 		m89or101 = FALSE;
-		gtp_change_x2y = TRUE;
-		gtp_x_reverse = TRUE;
+		gtp_change_x2y = FALSE;
+		gtp_x_reverse = FALSE;
 		gtp_y_reverse = FALSE;
 	} else if (val == 911) {
 		m89or101 = FALSE;
