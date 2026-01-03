@@ -47,11 +47,11 @@
 #if CONFIG_8_9
 #define GTP_CHANGE_X2Y        1
 #define GTP_X_REVERSE       	0
-#define GTP_Y_REVERSE       	1
+#define GTP_Y_REVERSE       	0
 #else
 #define GTP_CHANGE_X2Y        1
 #define GTP_X_REVERSE       	0
-#define GTP_Y_REVERSE       	1
+#define GTP_Y_REVERSE       	0
 #endif
 #define GTP_DRIVER_SEND_CFG   1
 #define GTP_HAVE_TOUCH_KEY    0
