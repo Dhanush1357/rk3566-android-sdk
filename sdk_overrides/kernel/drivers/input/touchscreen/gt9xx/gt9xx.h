@@ -46,12 +46,12 @@
 #define GTP_CUSTOM_CFG        1
 #if CONFIG_8_9
 #define GTP_CHANGE_X2Y        1
-#define GTP_X_REVERSE_ENABLE	0
-#define GTP_Y_REVERSE_ENABLE	1
+#define GTP_X_REVERSE       	0
+#define GTP_Y_REVERSE       	1
 #else
 #define GTP_CHANGE_X2Y        1
-#define GTP_X_REVERSE_ENABLE	0
-#define GTP_Y_REVERSE_ENABLE	1
+#define GTP_X_REVERSE       	0
+#define GTP_Y_REVERSE       	1
 #endif
 #define GTP_DRIVER_SEND_CFG   1
 #define GTP_HAVE_TOUCH_KEY    0
