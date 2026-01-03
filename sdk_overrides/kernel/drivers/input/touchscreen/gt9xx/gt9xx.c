@@ -335,20 +335,7 @@ s32 gtp_send_cfg(struct i2c_client *client)
     
     
     s32 ret = 2;
-
-    {
-        int i;
     
-    GTP_INFO("GT911 CFG applied (dump):");
-    for (i = 0; i < GTP_CONFIG_MAX_LENGTH; i++) {
-        printk("%02x ", config[i]);
-        if ((i + 1) % 16 == 0)
-            printk("\n");
-    }
-    printk("\n");
-    }
-    
-
 #if GTP_DRIVER_SEND_CFG
     s32 retry = 0;
     struct goodix_ts_data *ts = i2c_get_clientdata(client);
@@ -446,15 +433,6 @@ static void gtp_touch_down(struct goodix_ts_data* ts,s32 id,s32 x,s32 y,s32 w)
 	}
     if (gtp_y_reverse)
 			y = ts->abs_y_max - y;
-
-/* Scale to display resolution */
-x = x * 800 / ts->abs_x_max;
-y = y * 1280 / ts->abs_y_max;
-
-pr_err("FINAL_TOUCH id=%d x=%d y=%d w=%d\n", id, x, y, w);
-
-/* =========================== */
-
 
 #if GTP_ICS_SLOT_REPORT
     input_mt_slot(ts->input_dev, id);
@@ -1688,6 +1666,17 @@ static s32 gtp_init_panel(struct goodix_ts_data *ts)
     #if GTP_DRIVER_SEND_CFG
         GTP_INFO("  <%s>_%d \n", __func__, __LINE__);
         ret = gtp_send_cfg(ts->client);
+{
+    int i;
+
+    GTP_INFO("GT911 CFG applied dump (len=%d)", GTP_CONFIG_MAX_LENGTH);
+    for (i = 0; i < GTP_CONFIG_MAX_LENGTH; i++) {
+        printk("%02x ", config[i]);
+        if ((i + 1) % 16 == 0)
+            printk("\n");
+    }
+    printk("\n");
+}
         if (ret < 0)
         {
             GTP_ERROR("Send config error.");
