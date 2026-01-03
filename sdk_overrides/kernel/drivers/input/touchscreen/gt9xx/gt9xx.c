@@ -333,18 +333,20 @@ Output:
 s32 gtp_send_cfg(struct i2c_client *client)
 {
     
-    int i;
+    
     s32 ret = 2;
 
+    {
+        int i;
     
-    GTP_INFO("GT911 CFG applied (dump):",GTP_CONFIG_MAX_LENGTH);
+    GTP_INFO("GT911 CFG applied (dump):");
     for (i = 0; i < GTP_CONFIG_MAX_LENGTH; i++) {
         printk("%02x ", config[i]);
         if ((i + 1) % 16 == 0)
             printk("\n");
     }
     printk("\n");
-
+    }
     
 
 #if GTP_DRIVER_SEND_CFG
