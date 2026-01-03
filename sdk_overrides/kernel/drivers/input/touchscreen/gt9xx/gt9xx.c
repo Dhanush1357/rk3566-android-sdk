@@ -1671,11 +1671,11 @@ static s32 gtp_init_panel(struct goodix_ts_data *ts)
 
     GTP_INFO("GT911 CFG applied dump (len=%d)", GTP_CONFIG_MAX_LENGTH);
     for (i = 0; i < GTP_CONFIG_MAX_LENGTH; i++) {
-        printk("%02x ", config[i]);
+        printk("KERN_ERR %02x ", config[i]);
         if ((i + 1) % 16 == 0)
-            printk("\n");
+            printk(KERN_ERR "\n");
     }
-    printk("\n");
+    printk(KERN_ERR "\n");
 }
         if (ret < 0)
         {
