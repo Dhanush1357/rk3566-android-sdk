@@ -35,13 +35,13 @@
 #include "tspi-rk3566-dsi-v10.dtsi"
 
 //【开/关】HDMI 显示屏幕配置，里面内容几乎可以不用动，如果不需要hdmi显示直接注释掉即可
-// #include "tspi-rk3566-hdmi-v10.dtsi"
+//#include "tspi-rk3566-hdmi-v10.dtsi"
 
 //【开/关】摄像头 目前视频的是ov5659
 #include "tspi-rk3566-csi-v10.dtsi"
 
 //【开/关】网口 扩展板上使用的是千兆网，不接扩展板情况下可以关闭
-#include "tspi-rk3566-gmac1-v10.dtsi"
+ #include "tspi-rk3566-gmac1-v10.dtsi"
 
 //【开/关】下方是用户定义层，所有用户修改理论上在此下方修改就好了
 / {
@@ -53,20 +53,6 @@
 		headset_gpio = <&gpio0 RK_PC5 GPIO_ACTIVE_HIGH>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&hp_det>;
-	};
-
-	drm_baseparameter: drm-baseparameter {
-		compatible = "rockchip,drm-baseparameter";
-		status = "okay";
-
-		panel0 {
-			connector = "DSI-1";
-			display = "primary";
-			framebuffer = <800 1280>;
-			refresh = <60>;
-			bpc = <8>;
-			format = "rgb";
-		};
 	};
 
 	leds: leds {
@@ -167,6 +153,10 @@
 	};
 };
 
+&pwm0 {
+	status = "okay";
+};
+
 &pwm8 {
 	status = "okay";
 };
@@ -214,51 +204,3 @@
 			<0xe6	KEY_0>;
 	};
 };
-
-&dsi1 {
-    status = "okay";
-};
-&route_dsi1 {
-    status = "okay";
-};
-&route_hdmi {
-    status = "disabled";
-};
-&route_edp {
-    status = "disabled";
-};
-
-&i2c1 {
-    status = "okay";
-
-    ts@5d {
-        compatible = "goodix,gt9xx";
-        reg = <0x5d>;
-
-        touch-gpio = <&gpio1 RK_PA0 IRQ_TYPE_LEVEL_LOW>;
-        reset-gpio = <&gpio1 RK_PA1 GPIO_ACTIVE_LOW>;
-
-        max-x = <1280>;
-        max-y = <800>;
-        tp-size = <89>;
-    };
-};
-
-
-
-
-
-&pinctrl {
-    touch {
-        touch_int: touch-int {
-            rockchip,pins = <3 RK_PC0 RK_FUNC_GPIO &pcfg_pull_none>;
-        };
-
-        touch_rst: touch-rst {
-            rockchip,pins = <3 RK_PC1 RK_FUNC_GPIO &pcfg_pull_none>;
-        };
-    };
-};
-
-
-
