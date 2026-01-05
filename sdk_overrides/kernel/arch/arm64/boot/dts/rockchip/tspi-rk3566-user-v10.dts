@@ -265,6 +265,3 @@
 
 
 
-&bluetooth {
-    status = "disabled";
-};
