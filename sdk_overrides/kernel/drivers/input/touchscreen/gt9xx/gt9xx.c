@@ -332,10 +332,8 @@ Output:
 
 s32 gtp_send_cfg(struct i2c_client *client)
 {
-    
-    
     s32 ret = 2;
-    
+
 #if GTP_DRIVER_SEND_CFG
     s32 retry = 0;
     struct goodix_ts_data *ts = i2c_get_clientdata(client);
@@ -430,16 +428,16 @@ static void gtp_touch_down(struct goodix_ts_data* ts,s32 id,s32 x,s32 y,s32 w)
 	if (!bgt911 && !bgt970) {
 		if (gtp_x_reverse)
 			x = ts->abs_x_max - x;
-	}
-    if (gtp_y_reverse)
+
+		if (gtp_y_reverse)
 			y = ts->abs_y_max - y;
+	}
 
 #if GTP_ICS_SLOT_REPORT
     input_mt_slot(ts->input_dev, id);
     input_report_abs(ts->input_dev, ABS_MT_TRACKING_ID, id);
     input_report_abs(ts->input_dev, ABS_MT_POSITION_X, x);
-    input_report_abs
-    (ts->input_dev, ABS_MT_POSITION_Y, y);
+    input_report_abs(ts->input_dev, ABS_MT_POSITION_Y, y);
     input_report_abs(ts->input_dev, ABS_MT_TOUCH_MAJOR, w);
     input_report_abs(ts->input_dev, ABS_MT_WIDTH_MAJOR, w);
 #else
@@ -1438,8 +1436,6 @@ static s32 gtp_init_panel(struct goodix_ts_data *ts)
                               CFG_GROUP_LEN(cfg_info_group6)};;
     
     GTP_INFO("  <%s>_%d \n", __func__, __LINE__);
-    GTP_INFO("GT911 Sensor ID = %d", sensor_id);
-
    
     if(m89or101){
 	    if (ts->cfg_file_num) {
@@ -1452,8 +1448,8 @@ static s32 gtp_init_panel(struct goodix_ts_data *ts)
     }
     
     if (bgt911) {
-    	send_cfg_buf[0] = gtp_dat_gt9111;
-		cfg_info_len[0] =  CFG_GROUP_LEN(gtp_dat_gt9111);
+    	send_cfg_buf[0] = gtp_dat_gt11;
+		cfg_info_len[0] =  CFG_GROUP_LEN(gtp_dat_gt11);
     }
 
     if (bgt9110) {
@@ -1481,12 +1477,6 @@ static s32 gtp_init_panel(struct goodix_ts_data *ts)
         cfg_info_len[0], cfg_info_len[1], cfg_info_len[2], cfg_info_len[3],
         cfg_info_len[4], cfg_info_len[5]);
 
-      /* ================= FORCE GT911 CONFIG ================= */
-    send_cfg_buf[0] = gtp_dat_gt9111;
-    cfg_info_len[0] = CFG_GROUP_LEN(gtp_dat_gt9111);
-    GTP_INFO("FORCED GT911 config: gtp_dat_gt9111 (V66)");
-    /* ===================================================== */
-        
     
 #if GTP_COMPATIBLE_MODE
     if (CHIP_TYPE_GT9F == ts->chip_type)
@@ -1537,11 +1527,6 @@ static s32 gtp_init_panel(struct goodix_ts_data *ts)
         }
         GTP_INFO("Sensor_ID: %d", sensor_id);
     }
-
-
-
-
-
     ts->gtp_cfg_len = cfg_info_len[sensor_id];
     GTP_INFO("CTP_CONFIG_GROUP%d used, config length: %d", sensor_id + 1, ts->gtp_cfg_len);
     
@@ -1677,17 +1662,6 @@ static s32 gtp_init_panel(struct goodix_ts_data *ts)
     #if GTP_DRIVER_SEND_CFG
         GTP_INFO("  <%s>_%d \n", __func__, __LINE__);
         ret = gtp_send_cfg(ts->client);
-{
-    int i;
-
-    GTP_INFO("GT911 CFG applied dump (len=%d)", GTP_CONFIG_MAX_LENGTH);
-    for (i = 0; i < GTP_CONFIG_MAX_LENGTH; i++) {
-        printk("KERN_ERR %02x ", config[i]);
-        if ((i + 1) % 16 == 0)
-            printk(KERN_ERR "\n");
-    }
-    printk(KERN_ERR "\n");
-}
         if (ret < 0)
         {
             GTP_ERROR("Send config error.");
@@ -2123,7 +2097,6 @@ static s8 gtp_request_input_dev(struct i2c_client *client,
 
 	if (gtp_change_x2y)
 		GTP_SWAP(ts->abs_x_max, ts->abs_y_max);
-
 
 #if defined(CONFIG_CHROME_PLATFORMS)
     input_set_abs_params(ts->input_dev, ABS_X, 0, ts->abs_x_max, 0, 0);
@@ -2681,8 +2654,8 @@ static int goodix_ts_probe(struct i2c_client *client, const struct i2c_device_id
 	if (val == 89) {
 		m89or101 = TRUE;
 		gtp_change_x2y = TRUE;
-		gtp_x_reverse = FALSE;
-		gtp_y_reverse = TRUE;
+		gtp_x_reverse = TRUE;
+		gtp_y_reverse = FALSE;
 	} else if (val == 101) {
 		m89or101 = FALSE;
 		gtp_change_x2y = TRUE;
