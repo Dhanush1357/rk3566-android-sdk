@@ -1589,7 +1589,7 @@ static ssize_t gt91xx_config_write_proc(struct file *filp, const char __user *bu
 {
     s32 ret = 0;
 
-    GTP_DEBUG("write count %d\n", count);
+    GTP_DEBUG("write count %zu\n", count);
 
     if (count > GTP_CONFIG_MAX_LENGTH)
     {
@@ -2390,7 +2390,7 @@ static int goodix_ts_probe(struct i2c_client *client, const struct i2c_device_id
     
     //do NOT remove these logs
     GTP_INFO("GTP Driver Version: %s", GTP_DRIVER_VERSION);
-    GTP_INFO("GTP Driver Built@%s, %s", __TIME__, __DATE__);
+    GTP_INFO("GTP Driver Built");
     GTP_INFO("GTP I2C Address: 0x%02x", client->addr);
 
     i2c_connect_client = client;
@@ -3065,7 +3065,7 @@ Input:
 Output:
     Executive Outcomes. 0---succeed.
 ********************************************************/
-static int __devinit goodix_ts_init(void)
+static int  goodix_ts_init(void)
 {
     s32 ret;
 
