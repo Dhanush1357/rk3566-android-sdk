@@ -56,7 +56,6 @@ gsl3673-ts-y := gsl3673.o gsl_point_id.o
 obj-$(CONFIG_TOUCHSCREEN_GSL3673_800X1280)	+= gsl3673_800x1280.o gsl_point_id.o
 #obj-$(CONFIG_TOUCHSCREEN_GSL3676)	+= gsl3676/
 obj-n								+= gt9xx/
-obj-y								+= my_touch/
 obj-$(CONFIG_TOUCHSCREEN_HIDEEP)	+= hideep.o
 obj-$(CONFIG_TOUCHSCREEN_ILI210X)	+= ili210x.o
 obj-$(CONFIG_TOUCHSCREEN_IMX6UL_TSC)	+= imx6ul_tsc.o
