@@ -1593,7 +1593,7 @@ static ssize_t gt91xx_config_write_proc(struct file *filp, const char __user *bu
 
     if (count > GTP_CONFIG_MAX_LENGTH)
     {
-        GTP_ERROR("size not match [%d:%d]\n", GTP_CONFIG_MAX_LENGTH, count);
+        GTP_ERROR("size not match [%d:%zu]\n", GTP_CONFIG_MAX_LENGTH, count);
         return -EFAULT;
     }
 
