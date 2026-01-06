@@ -1,2 +1,2 @@
 # SPDX-License-Identifier: GPL-2.0
-obj-y	+= my_touch.o
+obj-$(CONFIG_TOUCHSCREEN_MY_TOUCH) += my_touch.o
