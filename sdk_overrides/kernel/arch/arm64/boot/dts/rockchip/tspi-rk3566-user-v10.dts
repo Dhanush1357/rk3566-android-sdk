@@ -55,20 +55,6 @@
 		pinctrl-0 = <&hp_det>;
 	};
 
-	drm_baseparameter: drm-baseparameter {
-		compatible = "rockchip,drm-baseparameter";
-		status = "okay";
-
-		panel0 {
-			connector = "DSI-1";
-			display = "primary";
-			framebuffer = <800 1280>;
-			refresh = <60>;
-			bpc = <8>;
-			format = "rgb";
-		};
-	};
-
 	leds: leds {
 		compatible = "gpio-leds";
 		rgb_led_r: rgb-led-r {
