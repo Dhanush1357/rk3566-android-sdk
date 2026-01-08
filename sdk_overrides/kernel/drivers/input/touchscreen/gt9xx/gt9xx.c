@@ -429,7 +429,7 @@ if (gtp_x_reverse)
 if (gtp_y_reverse)
     y = ts->abs_y_max - y;
 
-	}
+	
 
 #if GTP_ICS_SLOT_REPORT
     input_mt_slot(ts->input_dev, id);
