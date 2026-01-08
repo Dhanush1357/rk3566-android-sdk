@@ -439,7 +439,9 @@ if (gtp_y_reverse) {
 }
 
 
-	
+	 x = x * 800 / ts->abs_x_max;
+    y = y * 1280 / ts->abs_y_max;
+    
 
 #if GTP_ICS_SLOT_REPORT
     input_mt_slot(ts->input_dev, id);
