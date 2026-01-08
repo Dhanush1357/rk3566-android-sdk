@@ -422,12 +422,22 @@ Output:
 *********************************************************/
 static void gtp_touch_down(struct goodix_ts_data* ts,s32 id,s32 x,s32 y,s32 w)
 {
-	/* Apply reverse logic for GT911 as well */
-if (gtp_x_reverse)
+	if (gtp_x_reverse) {
     x = ts->abs_x_max - x;
+    if (x < 0)
+        x = 0;
+    else if (x > ts->abs_x_max)
+        x = ts->abs_x_max;
+}
 
-if (gtp_y_reverse)
+if (gtp_y_reverse) {
     y = ts->abs_y_max - y;
+    if (y < 0)
+        y = 0;
+    else if (y > ts->abs_y_max)
+        y = ts->abs_y_max;
+}
+
 
 	
 
