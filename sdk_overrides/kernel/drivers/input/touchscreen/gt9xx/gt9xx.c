@@ -1385,6 +1385,9 @@ static s32 gtp_get_info(struct goodix_ts_data *ts)
     
     ts->abs_x_max = (opr_buf[3] << 8) + opr_buf[2];
     ts->abs_y_max = (opr_buf[5] << 8) + opr_buf[4];
+
+    GTP_INFO("IC REPORTS RESOLUTION: X=%d Y=%d", ts->abs_x_max, ts->abs_y_max);
+
     
     opr_buf[0] = (u8)((GTP_REG_CONFIG_DATA+6) >> 8);
     opr_buf[1] = (u8)((GTP_REG_CONFIG_DATA+6) & 0xFF);
@@ -1451,6 +1454,8 @@ static s32 gtp_init_panel(struct goodix_ts_data *ts)
     	send_cfg_buf[0] = gtp_dat_gt11;
 		cfg_info_len[0] =  CFG_GROUP_LEN(gtp_dat_gt11);
     }
+    GTP_INFO("CFG SELECTED: GT911, cfg_len=%d", cfg_info_len[0]);
+
 
     if (bgt9110) {
 	    send_cfg_buf[0] = gtp_dat_gt9110;
@@ -1576,6 +1581,11 @@ static s32 gtp_init_panel(struct goodix_ts_data *ts)
     
     memset(&config[GTP_ADDR_LENGTH], 0, GTP_CONFIG_MAX_LENGTH);
     memcpy(&config[GTP_ADDR_LENGTH], send_cfg_buf[sensor_id], ts->gtp_cfg_len);
+
+    GTP_INFO("CFG RESOLUTION FROM HEADER: X=%d Y=%d",
+    (config[RESOLUTION_LOC + 1] << 8) | config[RESOLUTION_LOC],
+    (config[RESOLUTION_LOC + 3] << 8) | config[RESOLUTION_LOC + 2]);
+
 
 #if GTP_CUSTOM_CFG
     config[RESOLUTION_LOC]     = (u8)GTP_MAX_WIDTH;
@@ -2097,6 +2107,9 @@ static s8 gtp_request_input_dev(struct i2c_client *client,
 
 	if (gtp_change_x2y)
 		GTP_SWAP(ts->abs_x_max, ts->abs_y_max);
+
+        GTP_INFO("FINAL INPUT RESOLUTION: X=%d Y=%d", ts->abs_x_max, ts->abs_y_max);
+
 
 #if defined(CONFIG_CHROME_PLATFORMS)
     input_set_abs_params(ts->input_dev, ABS_X, 0, ts->abs_x_max, 0, 0);
@@ -2667,7 +2680,10 @@ static int goodix_ts_probe(struct i2c_client *client, const struct i2c_device_id
 		gtp_change_x2y = TRUE;
 		gtp_x_reverse = FALSE;
 		gtp_y_reverse = TRUE;
-	} else if (val == 9110) {
+	}
+    GTP_INFO("TP-SIZE=%d | bgt911=%d bgt9271=%d bgt970=%d | swap=%d xr=%d yr=%d",val, bgt911, !bgt911, bgt970, gtp_change_x2y, gtp_x_reverse, gtp_y_reverse);
+
+    else if (val == 9110) {
 		m89or101 = FALSE;
 		bgt9110 = TRUE;
 		gtp_change_x2y = TRUE;
