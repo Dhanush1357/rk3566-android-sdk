@@ -422,26 +422,16 @@ Output:
 *********************************************************/
 static void gtp_touch_down(struct goodix_ts_data* ts,s32 id,s32 x,s32 y,s32 w)
 {
-	if (gtp_x_reverse) {
-    x = ts->abs_x_max - x;
-    if (x < 0)
-        x = 0;
-    else if (x > ts->abs_x_max)
-        x = ts->abs_x_max;
-}
+	if (gtp_change_x2y)
+		GTP_SWAP(x, y);
 
-if (gtp_y_reverse) {
-    y = ts->abs_y_max - y;
-    if (y < 0)
-        y = 0;
-    else if (y > ts->abs_y_max)
-        y = ts->abs_y_max;
-	
-}
+	if (!bgt911 && !bgt970) {
+		if (gtp_x_reverse)
+			x = ts->abs_x_max - x;
 
-
-	
-
+		if (gtp_y_reverse)
+			y = ts->abs_y_max - y;
+	}
 
 #if GTP_ICS_SLOT_REPORT
     input_mt_slot(ts->input_dev, id);
@@ -514,8 +504,8 @@ static void gtp_pen_init(struct goodix_ts_data *ts)
     input_set_capability(ts->pen_dev, EV_KEY, BTN_STYLUS2);
 #endif
 
-    input_set_abs_params(ts->pen_dev, ABS_MT_POSITION_X, 0, 800 - 1, 0, 0);
-    input_set_abs_params(ts->pen_dev, ABS_MT_POSITION_Y, 0, 1280 - 1 , 0, 0);
+    input_set_abs_params(ts->pen_dev, ABS_MT_POSITION_X, 0, ts->abs_x_max, 0, 0);
+    input_set_abs_params(ts->pen_dev, ABS_MT_POSITION_Y, 0, ts->abs_y_max, 0, 0);
     input_set_abs_params(ts->pen_dev, ABS_MT_PRESSURE, 0, 255, 0, 0);
     input_set_abs_params(ts->pen_dev, ABS_MT_TOUCH_MAJOR, 0, 255, 0, 0);
     input_set_abs_params(ts->pen_dev, ABS_MT_TRACKING_ID, 0, 255, 0, 0);
