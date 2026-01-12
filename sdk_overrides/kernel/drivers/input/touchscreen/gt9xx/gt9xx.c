@@ -2711,6 +2711,18 @@ static int goodix_ts_probe(struct i2c_client *client, const struct i2c_device_id
 		gtp_y_reverse = TRUE;
 	}
 
+    bgt911 = (val == 911);
+
+
+    /* ---- FORCE GT911 COORDINATE ORIENTATION (800x1280 PORTRAIT) ---- */
+    if (bgt911) {
+    gtp_change_x2y = TRUE;   /* swap X and Y */
+    gtp_x_reverse  = FALSE;  /* left-right correct */
+    gtp_y_reverse  = TRUE;   /* top-bottom flip */
+
+    GTP_INFO("FORCED COORD MAP: swap=%d xr=%d yr=%d", gtp_change_x2y, gtp_x_reverse, gtp_y_reverse);
+}
+
     GTP_INFO("TP-SIZE=%d | bgt911=%d bgt9271=%d bgt970=%d | swap=%d xr=%d yr=%d",val, bgt911, !bgt911, bgt970, gtp_change_x2y, gtp_x_reverse, gtp_y_reverse);
 
 
