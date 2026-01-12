@@ -44,8 +44,6 @@
 
 //***************************PART1:ON/OFF define*******************************
 #define GTP_CUSTOM_CFG        1
-
-#define GTP_CUSTOM_CFG        0
 #if CONFIG_8_9
 #define GTP_CHANGE_X2Y        1
 #define GTP_X_REVERSE_ENABLE	0
