@@ -1429,9 +1429,9 @@ static s32 gtp_init_panel(struct goodix_ts_data *ts)
     u8 cfg_info_group4[] = CTP_CFG_GROUP4;
     u8 cfg_info_group5[] = CTP_CFG_GROUP5;
     u8 cfg_info_group6[] = CTP_CFG_GROUP6;
-    u8 *send_cfg_buf[] = {gtp_dat_10_1, cfg_info_group2, cfg_info_group3,
+    u8 *send_cfg_buf[] = {gtp_dat_gt11, cfg_info_group2, cfg_info_group3,
                             cfg_info_group4, cfg_info_group5, cfg_info_group6};
-    u8 cfg_info_len[] = { CFG_GROUP_LEN(gtp_dat_10_1),
+    u8 cfg_info_len[] = { CFG_GROUP_LEN(gtp_dat_gt11),
                               CFG_GROUP_LEN(cfg_info_group2),
                               CFG_GROUP_LEN(cfg_info_group3),
                               CFG_GROUP_LEN(cfg_info_group4),
@@ -2120,6 +2120,9 @@ static s8 gtp_request_input_dev(struct i2c_client *client,
     input_set_abs_params(ts->input_dev, ABS_MT_WIDTH_MAJOR, 0, 255, 0, 0);
     input_set_abs_params(ts->input_dev, ABS_MT_TOUCH_MAJOR, 0, 255, 0, 0);
     input_set_abs_params(ts->input_dev, ABS_MT_TRACKING_ID, 0, 255, 0, 0);
+
+    GTP_INFO("RUNTIME RESOLUTION: X=%d Y=%d",ts->abs_x_max, ts->abs_y_max);
+
 
     sprintf(phys, "input/ts");
     ts->input_dev->name = goodix_ts_name;
