@@ -1534,18 +1534,6 @@ static s32 gtp_init_panel(struct goodix_ts_data *ts)
     }
     ts->gtp_cfg_len = cfg_info_len[sensor_id];
 
-
-    if (bgt911) {
-    send_cfg_buf[sensor_id] = gtp_dat_gt11;
-    cfg_info_len[sensor_id] = CFG_GROUP_LEN(gtp_dat_gt11);
-    ts->gtp_cfg_len = cfg_info_len[sensor_id];   
-
-    GTP_INFO("GT911 FORCE CFG: len=%d first=0x%02X last=0x%02X",
-             ts->gtp_cfg_len,
-             send_cfg_buf[sensor_id][0],
-             send_cfg_buf[sensor_id][ts->gtp_cfg_len - 1]);
-}
-
     
     if (ts->gtp_cfg_len < GTP_CONFIG_MIN_LENGTH)
     {
@@ -2818,10 +2806,35 @@ static int goodix_ts_probe(struct i2c_client *client, const struct i2c_device_id
     }
 
     ret = gtp_read_version(client, &version_info);
+
+
+
+
+
     if (ret < 0)
     {
         GTP_ERROR("Read version failed.");
     }
+
+    /* =====================================================
+ * FORCE GT911 MODE (override TP-SIZE based detection)
+ * ===================================================== */
+bgt911  = 1;
+bgt9271 = 0;
+bgt970  = 0;
+bgt9110 = 0;
+bgt9111 = 0;
+bgt910  = 0;
+
+m89or101 = FALSE;
+
+/* GT911 physical orientation */
+gtp_change_x2y = TRUE;
+gtp_x_reverse  = FALSE;
+gtp_y_reverse  = TRUE;
+
+GTP_INFO("FORCED CHIP TYPE: GT911 (override TP-SIZE logic)");
+/* ===================================================== */
     
     ret = gtp_init_panel(ts);
     if (ret < 0)
