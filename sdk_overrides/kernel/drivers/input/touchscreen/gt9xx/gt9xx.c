@@ -2086,6 +2086,10 @@ static s8 gtp_request_input_dev(struct i2c_client *client,
 {
     s8 ret = -1;
     s8 phys[32];
+     int input_x_max = ts->abs_x_max;
+     int input_y_max = ts->abs_y_max;
+     int tmp;
+
 #if GTP_HAVE_TOUCH_KEY
     u8 index = 0;
 #endif
@@ -2117,13 +2121,11 @@ static s8 gtp_request_input_dev(struct i2c_client *client,
     input_set_capability(ts->input_dev, EV_KEY, KEY_POWER);
 #endif 
 
-
-
-    int input_x_max = ts->abs_x_max;
-int input_y_max = ts->abs_y_max;
+input_x_max = ts->abs_x_max;
+input_y_max = ts->abs_y_max;
 
 if (gtp_change_x2y) {
-    int tmp = input_x_max;
+    tmp = input_x_max;
     input_x_max = input_y_max;
     input_y_max = tmp;
 }
