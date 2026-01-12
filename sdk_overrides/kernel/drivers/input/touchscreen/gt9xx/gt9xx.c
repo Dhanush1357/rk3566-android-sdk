@@ -1533,13 +1533,19 @@ static s32 gtp_init_panel(struct goodix_ts_data *ts)
         GTP_INFO("Sensor_ID: %d", sensor_id);
     }
     ts->gtp_cfg_len = cfg_info_len[sensor_id];
-    GTP_INFO(
-    "CFG FINAL: sensor_id=%d, len=%d, first=0x%02X, last=0x%02X",
-    sensor_id,
-    ts->gtp_cfg_len,
-    send_cfg_buf[sensor_id][0],
-    send_cfg_buf[sensor_id][ts->gtp_cfg_len - 1]
-);
+
+
+    if (bgt911) {
+    send_cfg_buf[sensor_id] = gtp_dat_gt11;
+    cfg_info_len[sensor_id] = CFG_GROUP_LEN(gtp_dat_gt11);
+    ts->gtp_cfg_len = cfg_info_len[sensor_id];   
+
+    GTP_INFO("GT911 FORCE CFG: len=%d first=0x%02X last=0x%02X",
+             ts->gtp_cfg_len,
+             send_cfg_buf[sensor_id][0],
+             send_cfg_buf[sensor_id][ts->gtp_cfg_len - 1]);
+}
+
     
     if (ts->gtp_cfg_len < GTP_CONFIG_MIN_LENGTH)
     {
