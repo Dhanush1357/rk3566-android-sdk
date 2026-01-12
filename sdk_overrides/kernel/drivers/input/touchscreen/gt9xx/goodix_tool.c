@@ -40,7 +40,7 @@ extern void gtp_irq_enable(struct goodix_ts_data *);
 
 #pragma pack(1)
 typedef struct{
-    u8  wr;         //write read flag£¬0:R  1:W  2:PID 3:
+    u8  wr;         //write read flagï¿½ï¿½0:R  1:W  2:PID 3:
     u8  flag;       //0:no need flag/int 1: need flag  2:need int
     u8 flag_addr[2];  //flag address
     u8  flag_val;   //flag val
@@ -56,7 +56,7 @@ typedef struct{
     u8* data;       //data pointer
 }st_cmd_head;
 #pragma pack()
-st_cmd_head cmd_head;
+static st_cmd_head cmd_head;
 
 static struct i2c_client *gt_client = NULL;
 
@@ -78,11 +78,15 @@ static s32 (*tool_i2c_write)(u8 *, u16);
 #if GTP_ESD_PROTECT
 extern void gtp_esd_switch(struct i2c_client *, s32);
 #endif
-s32 DATA_LENGTH = 0;
-s8 IC_TYPE[16] = "GT9XX";
+static s32 DATA_LENGTH = 0;
+static s8 IC_TYPE[16] = "GT9XX";
 
 static void tool_set_proc_name(char * procname)
 {
+    /* * Comment out the following lines to avoid __DATE__ macro error 
+     * and non-reproducible build issues.
+     */
+    /*
     char *months[12] = {"Jan", "Feb", "Mar", "Apr", "May", 
         "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
     char date[20] = {0};
@@ -90,8 +94,6 @@ static void tool_set_proc_name(char * procname)
     int i = 0, n_month = 1, n_day = 0, n_year = 0;
     
     sprintf(date, "%s", __DATE__);
-    
-    //GTP_DEBUG("compile date: %s", date);
     
     sscanf(date, "%s %d %d", month, &n_day, &n_year);
     
@@ -104,11 +106,13 @@ static void tool_set_proc_name(char * procname)
         }
     }
     
-    sprintf(procname, "gmnode%04d%02d%02d", n_year, n_month, n_day);    
-    //sprintf(procname, "goodix_tool");
-    //GTP_DEBUG("procname = %s", procname);
-}
+    sprintf(procname, "gmnode%04d%02d%02d", n_year, n_month, n_day);
+    */
 
+    /* Use a fixed name instead */
+    sprintf(procname, "goodix_tool");
+    GTP_DEBUG("procname = %s", procname);
+}
 
 static s32 tool_i2c_read_no_extra(u8* buf, u16 len)
 {
