@@ -422,36 +422,48 @@ Output:
 *********************************************************/
 static void gtp_touch_down(struct goodix_ts_data* ts,s32 id,s32 x,s32 y,s32 w)
 {
-	if (gtp_change_x2y)
-		GTP_SWAP(x, y);
+    s32 tx = x;
+    s32 ty = y;
 
-	if (!bgt911 && !bgt970) {
-		if (gtp_x_reverse)
-			x = ts->abs_x_max - x;
+    /* 1. swap axis if required */
+    if (gtp_change_x2y) {
+        GTP_SWAP(tx, ty);
+    }
 
-		if (gtp_y_reverse)
-			y = ts->abs_y_max - y;
-	}
+    /* 2. reverse X if required */
+    if (gtp_x_reverse) {
+        tx = ts->abs_x_max - tx;
+    }
+
+    /* 3. reverse Y if required */
+    if (gtp_y_reverse) {
+        ty = ts->abs_y_max - ty;
+    }
+
+    /* 4. clamp (safety) */
+    if (tx < 0) tx = 0;
+    if (ty < 0) ty = 0;
+    if (tx > ts->abs_x_max) tx = ts->abs_x_max;
+    if (ty > ts->abs_y_max) ty = ts->abs_y_max;
 
 #if GTP_ICS_SLOT_REPORT
     input_mt_slot(ts->input_dev, id);
     input_report_abs(ts->input_dev, ABS_MT_TRACKING_ID, id);
-    input_report_abs(ts->input_dev, ABS_MT_POSITION_X, x);
-    input_report_abs(ts->input_dev, ABS_MT_POSITION_Y, y);
+#endif
+
+    input_report_abs(ts->input_dev, ABS_MT_POSITION_X, tx);
+    input_report_abs(ts->input_dev, ABS_MT_POSITION_Y, ty);
     input_report_abs(ts->input_dev, ABS_MT_TOUCH_MAJOR, w);
     input_report_abs(ts->input_dev, ABS_MT_WIDTH_MAJOR, w);
-#else
-    input_report_key(ts->input_dev, BTN_TOUCH, 1);
-    input_report_abs(ts->input_dev, ABS_MT_POSITION_X, x);
-    input_report_abs(ts->input_dev, ABS_MT_POSITION_Y, y);
-    input_report_abs(ts->input_dev, ABS_MT_TOUCH_MAJOR, w);
-    input_report_abs(ts->input_dev, ABS_MT_WIDTH_MAJOR, w);
-    input_report_abs(ts->input_dev, ABS_MT_TRACKING_ID, id);
+
+#if !GTP_ICS_SLOT_REPORT
     input_mt_sync(ts->input_dev);
 #endif
 
-    GTP_DEBUG("ID:%d, X:%d, Y:%d, W:%d", id, x, y, w);
+    GTP_DEBUG("ID:%d RAW(%d,%d) MAP(%d,%d) W:%d",
+              id, x, y, tx, ty, w);
 }
+
 
 /*******************************************************
 Function:
@@ -2105,9 +2117,6 @@ static s8 gtp_request_input_dev(struct i2c_client *client,
     input_set_capability(ts->input_dev, EV_KEY, KEY_POWER);
 #endif 
 
-	if (gtp_change_x2y && !bgt911)
-		GTP_SWAP(ts->abs_x_max, ts->abs_y_max);
-
         GTP_INFO("FINAL INPUT RESOLUTION: X=%d Y=%d", ts->abs_x_max, ts->abs_y_max);
 
 
@@ -2716,7 +2725,7 @@ static int goodix_ts_probe(struct i2c_client *client, const struct i2c_device_id
 
     /* ---- FORCE GT911 COORDINATE ORIENTATION (800x1280 PORTRAIT) ---- */
     if (bgt911) {
-    gtp_change_x2y = FALSE;   /* swap X and Y */
+    gtp_change_x2y = TRUE;   /* swap X and Y */
     gtp_x_reverse  = FALSE;  /* left-right correct */
     gtp_y_reverse  = TRUE;   /* top-bottom flip */
 
