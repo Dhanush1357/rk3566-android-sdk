@@ -2117,13 +2117,19 @@ static s8 gtp_request_input_dev(struct i2c_client *client,
     input_set_capability(ts->input_dev, EV_KEY, KEY_POWER);
 #endif 
 
-        GTP_INFO("FINAL INPUT RESOLUTION: X=%d Y=%d", ts->abs_x_max, ts->abs_y_max);
 
 
-#if defined(CONFIG_CHROME_PLATFORMS)
-    input_set_abs_params(ts->input_dev, ABS_X, 0, ts->abs_x_max, 0, 0);
-    input_set_abs_params(ts->input_dev, ABS_Y, 0, ts->abs_y_max, 0, 0);
-#endif
+    int input_x_max = ts->abs_x_max;
+int input_y_max = ts->abs_y_max;
+
+if (gtp_change_x2y) {
+    int tmp = input_x_max;
+    input_x_max = input_y_max;
+    input_y_max = tmp;
+}
+        GTP_INFO("FINAL INPUT RESOLUTION: X=%d Y=%d", input_x_max, input_y_max);
+
+       
     input_set_abs_params(ts->input_dev, ABS_MT_POSITION_X, 0, ts->abs_x_max, 0, 0);
     input_set_abs_params(ts->input_dev, ABS_MT_POSITION_Y, 0, ts->abs_y_max, 0, 0);
     input_set_abs_params(ts->input_dev, ABS_MT_WIDTH_MAJOR, 0, 255, 0, 0);
