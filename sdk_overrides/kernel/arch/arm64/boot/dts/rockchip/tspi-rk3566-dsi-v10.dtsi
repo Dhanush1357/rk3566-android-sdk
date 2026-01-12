@@ -68,8 +68,8 @@
 		compatible = "goodix,gt9xx";
 		reg = <0x5d>;
 		tp-size = <89>;
-		max-x = <800>;
-		max-y = <1280>;
+		max-x = <1280>;
+		max-y = <800>;
 		touch-gpio = <&gpio1 RK_PA0 IRQ_TYPE_LEVEL_LOW>;
 		reset-gpio = <&gpio1 RK_PA1 GPIO_ACTIVE_LOW>;
 	};
@@ -796,8 +796,8 @@
 			native-mode = <&dsi1_timing0>;
 			dsi1_timing0: timing0 {
 				clock-frequency = <71000000>;
-				hactive = <1280>;
-				vactive = <800>;
+				hactive = <800>;
+				vactive = <1280>;
 				hfront-porch = <52>;
 				hsync-len = <8>;
 				hback-porch = <48>;
