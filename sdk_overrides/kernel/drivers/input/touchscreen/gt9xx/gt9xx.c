@@ -1502,7 +1502,7 @@ static s32 gtp_init_panel(struct goodix_ts_data *ts)
             }
         }
     }
-
+    
     if ((!cfg_info_len[1]) && (!cfg_info_len[2]) && 
         (!cfg_info_len[3]) && (!cfg_info_len[4]) && 
         (!cfg_info_len[5]))
@@ -1533,7 +1533,13 @@ static s32 gtp_init_panel(struct goodix_ts_data *ts)
         GTP_INFO("Sensor_ID: %d", sensor_id);
     }
     ts->gtp_cfg_len = cfg_info_len[sensor_id];
-    GTP_INFO("CTP_CONFIG_GROUP%d used, config length: %d", sensor_id + 1, ts->gtp_cfg_len);
+    GTP_INFO(
+    "CFG FINAL: sensor_id=%d, len=%d, first=0x%02X, last=0x%02X",
+    sensor_id,
+    ts->gtp_cfg_len,
+    send_cfg_buf[sensor_id][0],
+    send_cfg_buf[sensor_id][ts->gtp_cfg_len - 1]
+);
     
     if (ts->gtp_cfg_len < GTP_CONFIG_MIN_LENGTH)
     {
@@ -2107,6 +2113,9 @@ static s8 gtp_request_input_dev(struct i2c_client *client,
 
 	if (gtp_change_x2y)
 		GTP_SWAP(ts->abs_x_max, ts->abs_y_max);
+
+        GTP_INFO("FINAL INPUT RESOLUTION: X=%d Y=%d", ts->abs_x_max, ts->abs_y_max);
+
 
 #if defined(CONFIG_CHROME_PLATFORMS)
     input_set_abs_params(ts->input_dev, ABS_X, 0, ts->abs_x_max, 0, 0);
