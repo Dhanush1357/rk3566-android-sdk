@@ -2716,7 +2716,7 @@ static int goodix_ts_probe(struct i2c_client *client, const struct i2c_device_id
 
     /* ---- FORCE GT911 COORDINATE ORIENTATION (800x1280 PORTRAIT) ---- */
     if (bgt911) {
-    gtp_change_x2y = TRUE;   /* swap X and Y */
+    gtp_change_x2y = FALSE;   /* swap X and Y */
     gtp_x_reverse  = FALSE;  /* left-right correct */
     gtp_y_reverse  = TRUE;   /* top-bottom flip */
 
