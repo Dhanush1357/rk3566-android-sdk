@@ -2105,7 +2105,7 @@ static s8 gtp_request_input_dev(struct i2c_client *client,
     input_set_capability(ts->input_dev, EV_KEY, KEY_POWER);
 #endif 
 
-	if (gtp_change_x2y)
+	if (gtp_change_x2y && !bgt911)
 		GTP_SWAP(ts->abs_x_max, ts->abs_y_max);
 
         GTP_INFO("FINAL INPUT RESOLUTION: X=%d Y=%d", ts->abs_x_max, ts->abs_y_max);
