@@ -2820,7 +2820,6 @@ static int goodix_ts_probe(struct i2c_client *client, const struct i2c_device_id
  * FORCE GT911 MODE (override TP-SIZE based detection)
  * ===================================================== */
 bgt911  = 1;
-bgt9271 = 0;
 bgt970  = 0;
 bgt9110 = 0;
 bgt9111 = 0;
