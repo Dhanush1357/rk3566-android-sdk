@@ -214,7 +214,23 @@ $ docker compose restart
 
 Among these directories, we often modify the `u-boot`, `kernel`, `vendor`, `system`, `device`, `frameworks`, and `packages` directories.
 
+### Important files & configs path
+
+- `BoardConfig.mk` - device/rockchip/rk356x
+- `rk356x.config` - kernel/kernel/configs
+- `android-11.config` - kernel/kernel/configs or kernel/configs/rockchip/
+- `fragmented configs` - kernel/arch/arm64/configs/
+
 ## Full SDK Compilation (Recommended Flow)
+
+### Setup ENV
+
+```bash
+# once per terminal
+# If you open a new terminal window, you need to first configure the environment. Run this command once, and it will remain active as long as you don't close the window:
+source build/envsetup.sh
+lunch rk3566_tspi-userdebug
+```
 
 ### Build U-Boot
 
@@ -237,13 +253,10 @@ cd ..
 ### Build Android System
 
 ```bash
-# If you open a new terminal window, you need to first configure the environment. Run this command once, and it will remain active as long as you don't close the window:
-source build/envsetup.sh
-lunch rk3566_tspi-userdebug
-
 # Build commands
-make installclean -j$(nproc)
 make -j$(nproc)
+# This builds:
+# system.img, vendor.img, boot.img, dtbo.img, recovery.img
 ```
 
 ### Generate Firmware Images
