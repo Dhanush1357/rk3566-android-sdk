@@ -422,48 +422,36 @@ Output:
 *********************************************************/
 static void gtp_touch_down(struct goodix_ts_data* ts,s32 id,s32 x,s32 y,s32 w)
 {
-    s32 tx = x;
-    s32 ty = y;
+	if (gtp_change_x2y)
+		GTP_SWAP(x, y);
 
-    /* 1. swap axis if required */
-    if (gtp_change_x2y) {
-        GTP_SWAP(tx, ty);
-    }
+	if (!bgt911 && !bgt970) {
+		if (gtp_x_reverse)
+			x = ts->abs_x_max - x;
 
-    /* 2. reverse X if required */
-    if (gtp_x_reverse) {
-        tx = ts->abs_x_max - tx;
-    }
-
-    /* 3. reverse Y if required */
-    if (gtp_y_reverse) {
-        ty = ts->abs_y_max - ty;
-    }
-
-    /* 4. clamp (safety) */
-    if (tx < 0) tx = 0;
-    if (ty < 0) ty = 0;
-    if (tx > ts->abs_x_max) tx = ts->abs_x_max;
-    if (ty > ts->abs_y_max) ty = ts->abs_y_max;
+		if (gtp_y_reverse)
+			y = ts->abs_y_max - y;
+	}
 
 #if GTP_ICS_SLOT_REPORT
     input_mt_slot(ts->input_dev, id);
     input_report_abs(ts->input_dev, ABS_MT_TRACKING_ID, id);
-#endif
-
-    input_report_abs(ts->input_dev, ABS_MT_POSITION_X, tx);
-    input_report_abs(ts->input_dev, ABS_MT_POSITION_Y, ty);
+    input_report_abs(ts->input_dev, ABS_MT_POSITION_X, x);
+    input_report_abs(ts->input_dev, ABS_MT_POSITION_Y, y);
     input_report_abs(ts->input_dev, ABS_MT_TOUCH_MAJOR, w);
     input_report_abs(ts->input_dev, ABS_MT_WIDTH_MAJOR, w);
-
-#if !GTP_ICS_SLOT_REPORT
+#else
+    input_report_key(ts->input_dev, BTN_TOUCH, 1);
+    input_report_abs(ts->input_dev, ABS_MT_POSITION_X, x);
+    input_report_abs(ts->input_dev, ABS_MT_POSITION_Y, y);
+    input_report_abs(ts->input_dev, ABS_MT_TOUCH_MAJOR, w);
+    input_report_abs(ts->input_dev, ABS_MT_WIDTH_MAJOR, w);
+    input_report_abs(ts->input_dev, ABS_MT_TRACKING_ID, id);
     input_mt_sync(ts->input_dev);
 #endif
 
-    GTP_DEBUG("ID:%d RAW(%d,%d) MAP(%d,%d) W:%d",
-              id, x, y, tx, ty, w);
+    GTP_DEBUG("ID:%d, X:%d, Y:%d, W:%d", id, x, y, w);
 }
-
 
 /*******************************************************
 Function:
@@ -2086,10 +2074,6 @@ static s8 gtp_request_input_dev(struct i2c_client *client,
 {
     s8 ret = -1;
     s8 phys[32];
-     int input_x_max = ts->abs_x_max;
-     int input_y_max = ts->abs_y_max;
-     int tmp;
-
 #if GTP_HAVE_TOUCH_KEY
     u8 index = 0;
 #endif
@@ -2121,17 +2105,16 @@ static s8 gtp_request_input_dev(struct i2c_client *client,
     input_set_capability(ts->input_dev, EV_KEY, KEY_POWER);
 #endif 
 
-input_x_max = ts->abs_x_max;
-input_y_max = ts->abs_y_max;
+	if (gtp_change_x2y)
+		GTP_SWAP(ts->abs_x_max, ts->abs_y_max);
 
-if (gtp_change_x2y) {
-    tmp = input_x_max;
-    input_x_max = input_y_max;
-    input_y_max = tmp;
-}
-        GTP_INFO("FINAL INPUT RESOLUTION: X=%d Y=%d", input_x_max, input_y_max);
+        GTP_INFO("FINAL INPUT RESOLUTION: X=%d Y=%d", ts->abs_x_max, ts->abs_y_max);
 
-       
+
+#if defined(CONFIG_CHROME_PLATFORMS)
+    input_set_abs_params(ts->input_dev, ABS_X, 0, ts->abs_x_max, 0, 0);
+    input_set_abs_params(ts->input_dev, ABS_Y, 0, ts->abs_y_max, 0, 0);
+#endif
     input_set_abs_params(ts->input_dev, ABS_MT_POSITION_X, 0, ts->abs_x_max, 0, 0);
     input_set_abs_params(ts->input_dev, ABS_MT_POSITION_Y, 0, ts->abs_y_max, 0, 0);
     input_set_abs_params(ts->input_dev, ABS_MT_WIDTH_MAJOR, 0, 255, 0, 0);
@@ -2683,8 +2666,8 @@ static int goodix_ts_probe(struct i2c_client *client, const struct i2c_device_id
 
 	if (val == 89) {
 		m89or101 = TRUE;
-		gtp_change_x2y = FALSE;
-		gtp_x_reverse = FALSE;
+		gtp_change_x2y = TRUE;
+		gtp_x_reverse = TRUE;
 		gtp_y_reverse = FALSE;
 	} else if (val == 101) {
 		m89or101 = FALSE;
@@ -2727,18 +2710,6 @@ static int goodix_ts_probe(struct i2c_client *client, const struct i2c_device_id
 		gtp_x_reverse = FALSE;
 		gtp_y_reverse = TRUE;
 	}
-
-    bgt911 = (val == 911);
-
-
-    /* ---- FORCE GT911 COORDINATE ORIENTATION (800x1280 PORTRAIT) ---- */
-    if (bgt911) {
-    gtp_change_x2y = TRUE;   /* swap X and Y */
-    gtp_x_reverse  = FALSE;  /* left-right correct */
-    gtp_y_reverse  = TRUE;   /* top-bottom flip */
-
-    GTP_INFO("FORCED COORD MAP: swap=%d xr=%d yr=%d", gtp_change_x2y, gtp_x_reverse, gtp_y_reverse);
-}
 
     GTP_INFO("TP-SIZE=%d | bgt911=%d bgt9271=%d bgt970=%d | swap=%d xr=%d yr=%d",val, bgt911, !bgt911, bgt970, gtp_change_x2y, gtp_x_reverse, gtp_y_reverse);
 
