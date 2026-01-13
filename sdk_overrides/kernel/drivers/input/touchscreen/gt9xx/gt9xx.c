@@ -62,9 +62,7 @@ static u8 bgt9110 = FALSE;
 static u8 bgt9111 = FALSE;
 static u8 bgt970 = FALSE;
 static u8 bgt910 = FALSE;
-static u8 gtp_change_x2y = TRUE;
-static u8 gtp_x_reverse = FALSE;
-static u8 gtp_y_reverse = TRUE;
+
 
 static const char *goodix_ts_name = "goodix-ts";
 static struct workqueue_struct *goodix_wq;
@@ -422,16 +420,19 @@ Output:
 *********************************************************/
 static void gtp_touch_down(struct goodix_ts_data* ts,s32 id,s32 x,s32 y,s32 w)
 {
-	if (gtp_change_x2y)
-		GTP_SWAP(x, y);
+	if (bgt911) {
+    int tmp;
 
-	if (!bgt911 && !bgt970) {
-		if (gtp_x_reverse)
-			x = ts->abs_x_max - x;
+    /* swap X/Y because sensor is mounted rotated */
+    tmp = x;
+    x = y;
+    y = tmp;
 
-		if (gtp_y_reverse)
-			y = ts->abs_y_max - y;
-	}
+    /* mirror X to match LCD orientation */
+    x = ts->abs_x_max - x;
+}
+
+
 
 #if GTP_ICS_SLOT_REPORT
     input_mt_slot(ts->input_dev, id);
@@ -1502,7 +1503,7 @@ static s32 gtp_init_panel(struct goodix_ts_data *ts)
             }
         }
     }
-    
+
     if ((!cfg_info_len[1]) && (!cfg_info_len[2]) && 
         (!cfg_info_len[3]) && (!cfg_info_len[4]) && 
         (!cfg_info_len[5]))
@@ -1533,7 +1534,7 @@ static s32 gtp_init_panel(struct goodix_ts_data *ts)
         GTP_INFO("Sensor_ID: %d", sensor_id);
     }
     ts->gtp_cfg_len = cfg_info_len[sensor_id];
-
+    GTP_INFO("CTP_CONFIG_GROUP%d used, config length: %d", sensor_id + 1, ts->gtp_cfg_len);
     
     if (ts->gtp_cfg_len < GTP_CONFIG_MIN_LENGTH)
     {
@@ -2105,11 +2106,6 @@ static s8 gtp_request_input_dev(struct i2c_client *client,
     input_set_capability(ts->input_dev, EV_KEY, KEY_POWER);
 #endif 
 
-	if (gtp_change_x2y)
-		GTP_SWAP(ts->abs_x_max, ts->abs_y_max);
-
-        GTP_INFO("FINAL INPUT RESOLUTION: X=%d Y=%d", ts->abs_x_max, ts->abs_y_max);
-
 
 #if defined(CONFIG_CHROME_PLATFORMS)
     input_set_abs_params(ts->input_dev, ABS_X, 0, ts->abs_x_max, 0, 0);
@@ -2664,54 +2660,10 @@ static int goodix_ts_probe(struct i2c_client *client, const struct i2c_device_id
     	return -EINVAL;
     }
 
-	if (val == 89) {
-		m89or101 = TRUE;
-		gtp_change_x2y = TRUE;
-		gtp_x_reverse = TRUE;
-		gtp_y_reverse = FALSE;
-	} else if (val == 101) {
-		m89or101 = FALSE;
-		gtp_change_x2y = TRUE;
-		gtp_x_reverse = TRUE;
-		gtp_y_reverse = FALSE;
-	} else if (val == 911) {
-		m89or101 = FALSE;
-		bgt911 = TRUE;
-		gtp_change_x2y = TRUE;
-		gtp_x_reverse = FALSE;
-		gtp_y_reverse = TRUE;
-	}
-
-    else if (val == 9110) {
-		m89or101 = FALSE;
-		bgt9110 = TRUE;
-		gtp_change_x2y = TRUE;
-		gtp_x_reverse = TRUE;
-		gtp_y_reverse = FALSE;
-	} else if (val == 9111) {
-		m89or101 = FALSE;
-		bgt9111 = TRUE;
-		gtp_change_x2y = TRUE;
-		gtp_x_reverse = FALSE;
-		gtp_y_reverse = FALSE;
-	} else if (val == 970) {
-		m89or101 = FALSE;
-		bgt911 = FALSE;
-		bgt970 = TRUE;
-		gtp_change_x2y = FALSE;
-		gtp_x_reverse = FALSE;
-		gtp_y_reverse = TRUE;
-	} else if (val == 910) {
-		m89or101 = FALSE;
-		bgt911 = FALSE;
-		bgt970 = FALSE;
-		bgt910 = TRUE;
-		gtp_change_x2y = TRUE;
-		gtp_x_reverse = FALSE;
-		gtp_y_reverse = TRUE;
-	}
-
-    GTP_INFO("TP-SIZE=%d | bgt911=%d bgt9271=%d bgt970=%d | swap=%d xr=%d yr=%d",val, bgt911, !bgt911, bgt970, gtp_change_x2y, gtp_x_reverse, gtp_y_reverse);
+	if (val == 911) {
+    bgt911 = TRUE;
+    m89or101 = FALSE;
+}
 
 
 	ts->tp_regulator = devm_regulator_get(&client->dev, "tp");
@@ -2806,34 +2758,10 @@ static int goodix_ts_probe(struct i2c_client *client, const struct i2c_device_id
     }
 
     ret = gtp_read_version(client, &version_info);
-
-
-
-
-
     if (ret < 0)
     {
         GTP_ERROR("Read version failed.");
     }
-
-    /* =====================================================
- * FORCE GT911 MODE (override TP-SIZE based detection)
- * ===================================================== */
-bgt911  = 1;
-bgt970  = 0;
-bgt9110 = 0;
-bgt9111 = 0;
-bgt910  = 0;
-
-m89or101 = FALSE;
-
-/* GT911 physical orientation */
-gtp_change_x2y = TRUE;
-gtp_x_reverse  = FALSE;
-gtp_y_reverse  = TRUE;
-
-GTP_INFO("FORCED CHIP TYPE: GT911 (override TP-SIZE logic)");
-/* ===================================================== */
     
     ret = gtp_init_panel(ts);
     if (ret < 0)
