@@ -54,6 +54,8 @@ PRODUCT_PROPERTY_OVERRIDES += ro.vendor.hdmirotationlock=true
 
 # Disable emulator / cuttlefish / goldfish components
 PRODUCT_SOONG_NAMESPACES :=
+TARGET_BUILD_CUTTLEFISH := false
+
 
 PRODUCT_PACKAGES_REMOVE += \
     libOpenglRender \
