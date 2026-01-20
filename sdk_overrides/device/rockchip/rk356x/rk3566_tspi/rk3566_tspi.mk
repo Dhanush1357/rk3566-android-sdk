@@ -52,3 +52,13 @@ PRODUCT_PROPERTY_OVERRIDES += persist.wifi.sleep.delay.ms=0
 PRODUCT_PROPERTY_OVERRIDES += persist.bt.power.down=true
 PRODUCT_PROPERTY_OVERRIDES += ro.vendor.hdmirotationlock=true
 
+# Disable emulator / cuttlefish / goldfish components
+PRODUCT_SOONG_NAMESPACES :=
+
+PRODUCT_PACKAGES_REMOVE += \
+    libOpenglRender \
+    libOpenglRender_passthrough \
+    libvirglrenderer \
+    libvirglrenderer_cuttlefish
+
+
