@@ -938,6 +938,13 @@ static void goodix_ts_work_func(struct work_struct *work)
                 input_y  = coor_data[pos + 3] | (coor_data[pos + 4] << 8);
                 input_w  = coor_data[pos + 5] | (coor_data[pos + 6] << 8);
 
+                GTP_INFO("WORK RAW : id=%d x=%d y=%d max_x=%d max_y=%d",id, input_x, input_y, ts->abs_x_max, ts->abs_y_max);
+
+                /* mirror X only */
+                    input_x = ts->abs_x_max - 1 - input_x;
+
+                GTP_INFO("WORK FIX : id=%d x=%d y=%d",id, input_x, input_y);
+
                 gtp_touch_down(ts, id, input_x, input_y, input_w);
                 pre_touch |= 0x01 << i;
                 
