@@ -49,8 +49,8 @@
 #define GTP_X_REVERSE_ENABLE	0
 #define GTP_Y_REVERSE_ENABLE	1
 #else
-#define GTP_CHANGE_X2Y        1
-#define GTP_X_REVERSE_ENABLE	1
+#define GTP_CHANGE_X2Y        0
+#define GTP_X_REVERSE_ENABLE	0
 #define GTP_Y_REVERSE_ENABLE	0
 #endif
 #define GTP_DRIVER_SEND_CFG   1
