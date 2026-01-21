@@ -420,6 +420,10 @@ Output:
 *********************************************************/
 static void gtp_touch_down(struct goodix_ts_data* ts,s32 id,s32 x,s32 y,s32 w)
 {
+
+    GTP_INFO("### gtp_touch_down CALLED ###");
+
+
 	if (bgt911) {
         /* DEBUG: raw coordinates from controller */
     GTP_INFO("RAW  : id=%d x=%d y=%d max_x=%d max_y=%d", id, x, y, ts->abs_x_max, ts->abs_y_max);
