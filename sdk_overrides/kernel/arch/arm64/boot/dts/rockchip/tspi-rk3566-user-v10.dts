@@ -55,7 +55,7 @@
         regulator-min-microvolt = <5000000>;
         regulator-max-microvolt = <5000000>;
         enable-active-high;
-    	gpio = <&gpio3 RK_PC5 GPIO_ACTIVE_HIGH>;
+    	gpio = <&gpio3 RK_PA5 GPIO_ACTIVE_HIGH>;
     };
 
 	rk_headset: rk-headset {
