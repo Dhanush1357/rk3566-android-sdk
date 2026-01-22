@@ -48,6 +48,16 @@
 	model = "lckfb tspi V10 Board";
 	compatible = "lckfb,tspi-v10", "rockchip,rk3566";
 
+	/* USB VBUS for FPC (USB_HOST1) */
+    vcc5v0_usb: vcc5v0-usb {
+        compatible = "regulator-fixed";
+        regulator-name = "vcc5v0-usb";
+        regulator-min-microvolt = <5000000>;
+        regulator-max-microvolt = <5000000>;
+        regulator-boot-on;
+        regulator-always-on;
+    };
+
 	rk_headset: rk-headset {
 		compatible = "rockchip_headset";
 		headset_gpio = <&gpio0 RK_PC5 GPIO_ACTIVE_HIGH>;
@@ -98,6 +108,10 @@
 //耳机插入检测，不使用扩展板情况需关闭，否则默认会检测到耳机插入
 &rk_headset {
 	status = "disabled";
+};
+
+&usb_host1_ehci {
+    vbus-supply = <&vcc5v0_usb>;
 };
 
 //用户串口3
