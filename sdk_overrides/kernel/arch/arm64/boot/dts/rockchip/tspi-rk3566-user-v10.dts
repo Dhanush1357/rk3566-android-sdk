@@ -103,7 +103,14 @@ vcc5v0_usb: vcc5v0-usb {
 			rockchip,pins = <0 RK_PC5 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 	};
+	
+    usb {
+        usb_host1_vbus_en: usb-host1-vbus-en {
+            rockchip,pins = <0 RK_PA5 RK_FUNC_GPIO &pcfg_pull_none>;
+        };
+    };
 };
+
 
 //用户三色灯
 &leds {
