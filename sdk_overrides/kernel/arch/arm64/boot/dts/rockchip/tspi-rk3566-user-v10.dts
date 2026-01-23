@@ -57,7 +57,7 @@ vcc5v0_usb: vcc5v0-usb {
     regulator-max-microvolt = <5000000>;
 
     enable-active-high;
-    gpio = <&gpio0 RK_PA5 GPIO_ACTIVE_HIGH>;
+    gpio = <&gpio0 RK_PA6 GPIO_ACTIVE_HIGH>;
 
     startup-delay-us = <100000>;
     regulator-boot-on;
