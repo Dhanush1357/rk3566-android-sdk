@@ -808,6 +808,22 @@
 				vsync-active = <0>;
 				de-active = <0>;
 				pixelclk-active = <0>;
+
+			};
+			dsi1_timing1: timing1 {
+				clock-frequency = <58000000>;
+				hactive = <720>;
+				vactive = <1280>;
+				hfront-porch = <60>;
+				hsync-len = <5>;
+				hback-porch = <60>;
+				vfront-porch = <8>;
+				vsync-len = <8>;
+				vback-porch = <10>;
+				hsync-active = <0>;
+				vsync-active = <0>;
+				de-active = <1>;
+				pixelclk-active = <0>;
 			};
 		};
 
