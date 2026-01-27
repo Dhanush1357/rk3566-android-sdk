@@ -793,7 +793,8 @@
 		];
 
 		display-timings {
-			
+    /* Do NOT force native-mode */
+
     timing_31c_5inch: timing0 {
         hactive = <720>;
         vactive = <1280>;
@@ -819,7 +820,7 @@
     };
 };
 
-		};
+
 
 		ports {
 			#address-cells = <1>;
