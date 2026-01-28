@@ -791,23 +791,26 @@
 			05 00 01 10
 		];
 
-		disp_timings1: display-timings {
-			native-mode = <&dsi1_timing0> ;
-			dsi1_timing0: timing0 {
-				clock-frequency = <58000000>;
-				hactive = <720>;
-				vactive = <1280>;
-				hfront-porch = <60>;
-				hsync-len = <5>;
-				hback-porch = <60>;
-				vfront-porch = <8>;
-				vsync-len = <8>;
-				vback-porch = <10>;
-				hsync-active = <0>;
-				vsync-active = <0>;
-				de-active = <1>;
-				pixelclk-active = <0>;
-			};
+		dsi1_timing0: timing0 {
+    clock-frequency = <58000000>;
+
+    hactive = <720>;
+    vactive = <1280>;
+
+    hsync-len    = <5>;
+
+    hfront-porch = <40>;
+    hback-porch  = <40>;
+
+    vfront-porch = <8>;
+    vsync-len    = <8>;
+    vback-porch  = <10>;
+
+    hsync-active = <0>;
+    vsync-active = <0>;
+    de-active    = <1>;
+    pixelclk-active = <0>;
+};
 			
 		};
 
