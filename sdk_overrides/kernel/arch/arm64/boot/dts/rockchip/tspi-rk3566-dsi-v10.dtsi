@@ -794,24 +794,8 @@
 		disp_timings1: display-timings {
 			native-mode = <&dsi1_timing0> ;
 			dsi1_timing0: timing0 {
-				clock-frequency = <71000000>;
-				hactive = <800>;
-				vactive = <1280>;
-				hfront-porch = <52>;
-				hsync-len = <8>;
-				hback-porch = <48>;
-				vfront-porch = <15>;
-				vsync-len = <6>;
-				vback-porch = <16>;
-				hsync-active = <0>;
-				vsync-active = <0>;
-				de-active = <0>;
-				pixelclk-active = <0>;
-
-			};
-			dsi1_timing1: timing1 {
 				clock-frequency = <58000000>;
-				hactive = <720>;
+				hactive = <800>;
 				vactive = <1280>;
 				hfront-porch = <60>;
 				hsync-len = <5>;
