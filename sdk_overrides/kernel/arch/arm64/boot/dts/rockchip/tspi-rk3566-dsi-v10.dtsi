@@ -579,7 +579,7 @@
 			MIPI_DSI_MODE_LPM | MIPI_DSI_MODE_EOT_PACKET)>;
 		dsi,format = <MIPI_DSI_FMT_RGB888>;
 		dsi,lanes  = <4>;
-		panel-init-sequence = [
+		/*panel-init-sequence = [
 			39 00 04 FF 98 81 03
 			15 00 02 01 00
 			15 00 02 02 00
@@ -790,7 +790,7 @@
 		panel-exit-sequence = [
 			05 00 01 28
 			05 00 01 10
-		];
+		];*/
 
 		disp_timings1: display-timings {
 			native-mode = <&dsi1_timing0>;
