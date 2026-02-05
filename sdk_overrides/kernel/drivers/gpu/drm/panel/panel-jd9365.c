@@ -238,7 +238,7 @@ static int jd9365_probe(struct mipi_dsi_device *dsi)
 	return 0;
 }
 
-static void jd9365_remove(struct mipi_dsi_device *dsi)
+static int jd9365_remove(struct mipi_dsi_device *dsi)
 {
 	struct jd9365 *ctx = mipi_dsi_get_drvdata(dsi);
 
