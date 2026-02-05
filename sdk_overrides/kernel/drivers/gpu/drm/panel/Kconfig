@@ -197,7 +197,6 @@ config DRM_PANEL_JD9365
 	depends on OF
 	depends on DRM_MIPI_DSI
 	depends on BACKLIGHT_CLASS_DEVICE
-	select DRM_PANEL
 	help
 	  Say Y or M here if you want to enable support for panels
 	  based on the JD9365 MIPI DSI controller.
