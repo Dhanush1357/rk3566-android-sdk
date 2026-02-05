@@ -244,6 +244,8 @@ static void jd9365_remove(struct mipi_dsi_device *dsi)
 
 	mipi_dsi_detach(dsi);
 	drm_panel_remove(&ctx->panel);
+
+	return 0;
 }
 
 /* ------------------------------------------------------------------------- */
