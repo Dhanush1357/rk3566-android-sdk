@@ -195,6 +195,7 @@ config DRM_PANEL_SITRONIX_ST7789V
 config DRM_PANEL_JD9365
 	tristate "JD9365 based MIPI DSI panels"
 	depends on OF
+	depends on DRM_PANEL
 	depends on DRM_MIPI_DSI
 	depends on BACKLIGHT_CLASS_DEVICE
 	help
