@@ -155,8 +155,7 @@ static int jd9365_unprepare(struct drm_panel *panel)
 	return 0;
 }
 
-static int jd9365_get_modes(struct drm_panel *panel,
-			    struct drm_connector *connector)
+static int jd9365_get_modes(struct drm_panel *panel)
 {
 	struct drm_display_mode *mode;
 
