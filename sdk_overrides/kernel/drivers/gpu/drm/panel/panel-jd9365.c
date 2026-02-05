@@ -219,12 +219,14 @@ static int jd9365_probe(struct mipi_dsi_device *dsi)
 	dsi->lanes = 4;
 	dsi->format = MIPI_DSI_FMT_RGB888;
 	dsi->mode_flags = MIPI_DSI_MODE_VIDEO |
-			  MIPI_DSI_MODE_VIDEO_BURST |
-			  MIPI_DSI_MODE_LPM;
+		  MIPI_DSI_MODE_VIDEO_BURST |
+		  MIPI_DSI_MODE_LPM;
 
-	drm_panel_init(&ctx->panel, &dsi->dev,
-		       &jd9365_panel_funcs,
-		       DRM_MODE_CONNECTOR_DSI);
+	/* OLD kernels (RK3566 Android) use this style */
+	drm_panel_init(&ctx->panel);
+	ctx->panel.dev = &dsi->dev;
+	ctx->panel.funcs = &jd9365_panel_funcs;
+	ctx->panel.connector_type = DRM_MODE_CONNECTOR_DSI;
 
 	drm_panel_add(&ctx->panel);
 
@@ -243,6 +245,8 @@ static void jd9365_remove(struct mipi_dsi_device *dsi)
 
 	mipi_dsi_detach(dsi);
 	drm_panel_remove(&ctx->panel);
+
+	return 0;
 }
 
 /* ------------------------------------------------------------------------- */
