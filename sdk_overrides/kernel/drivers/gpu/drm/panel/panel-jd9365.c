@@ -158,6 +158,10 @@ static int jd9365_unprepare(struct drm_panel *panel)
 static int jd9365_get_modes(struct drm_panel *panel)
 {
 	struct drm_display_mode *mode;
+	struct drm_connector *connector = panel->connector;
+
+	if (!connector)
+		return -EINVAL;
 
 	mode = drm_mode_duplicate(connector->dev,
 		&(struct drm_display_mode) {
