@@ -16,12 +16,6 @@
 #include <drm/drm_modes.h>
 #include <drm/drm_panel.h>
 
-struct jd9365 {
-	struct drm_panel panel;
-	struct mipi_dsi_device *dsi;
-	struct gpio_desc *reset;
-	bool prepared;
-};
 
 static inline struct jd9365 *panel_to_jd9365(struct drm_panel *panel)
 {
@@ -167,12 +161,8 @@ static int jd9365_unprepare(struct drm_panel *panel)
 static int jd9365_get_modes(struct drm_panel *panel)
 {
 	struct drm_display_mode *mode;
-	struct drm_connector *connector = panel->connector;
 
-	if (!connector)
-		return -EINVAL;
-
-	mode = drm_mode_duplicate(connector->dev,
+	mode = drm_mode_duplicate(panel->drm,
 		&(struct drm_display_mode) {
 			.clock = 51200,
 			.hdisplay = 1024,
@@ -254,7 +244,6 @@ static int jd9365_remove(struct mipi_dsi_device *dsi)
 	mipi_dsi_detach(dsi);
 	drm_panel_remove(&ctx->panel);
 
-	return 0;
 }
 
 /* ------------------------------------------------------------------------- */
