@@ -565,6 +565,7 @@
 		status = "okay";
 		compatible = "jd,jd9365";
 		reset-gpios = <&gpio3 RK_PC1 GPIO_ACTIVE_LOW>;
+		enable-gpios = <&gpio3 RK_PC0 GPIO_ACTIVE_HIGH>;
 		pinctrl-names = "default";
 		pinctrl-0 = <&dsi1_rst_gpio>;
 		reg = <0>;
@@ -597,7 +598,7 @@
 				hsync-active = <0>;
 				vsync-active = <0>;
 				de-active = <0>;
-				pixelclk-active = <0>;
+				pixelclk-active = <1>;
 			};
 		};
 

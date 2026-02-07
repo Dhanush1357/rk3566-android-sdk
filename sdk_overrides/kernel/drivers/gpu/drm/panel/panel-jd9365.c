@@ -127,6 +127,10 @@ static int jd9365_prepare(struct drm_panel *panel)
 	if (ctx->prepared)
 		return 0;
 
+	if (ctx->enable) {
+		gpiod_set_value_cansleep(ctx->enable, 1);
+		msleep(10);
+
 	if (ctx->reset) {
 		gpiod_set_value_cansleep(ctx->reset, 0);
 		msleep(20);
@@ -152,6 +156,11 @@ static int jd9365_unprepare(struct drm_panel *panel)
 	jd9365_panel_off(ctx);
 	ctx->prepared = false;
 
+	if (ctx->enable)
+		gpiod_set_value_cansleep(ctx->enable, 0);
+
+	
+	ctx->prepared = false;
 	return 0;
 }
 
