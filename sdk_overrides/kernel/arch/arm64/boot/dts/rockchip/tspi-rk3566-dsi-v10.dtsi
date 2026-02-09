@@ -583,7 +583,10 @@
 		/* Select page 0 */
 	15 00 02 30 00
 
-	/* MIPI interface / lane setting */
+	/* Enable internal power */
+	15 00 02 01 00
+
+	/* MIPI interface / lane config */
 	15 00 02 0B 13
 
 	/* Exit sleep */
