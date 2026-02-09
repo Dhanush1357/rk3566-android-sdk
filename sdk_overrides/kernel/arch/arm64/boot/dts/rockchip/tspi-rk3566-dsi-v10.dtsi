@@ -580,12 +580,18 @@
 		dsi,format = <MIPI_DSI_FMT_RGB888>;
 		dsi,lanes  = <4>;
 		panel-init-sequence = [
-		/* PAGE 3: power */
-	39 00 04 FF 98 81 03
-	15 00 02 01 00
-	15 00 02 02 00
-	15 00 02 03 53
-	15 00 02 04 53
+		/* PAGE 3: internal power enable */
+39 00 04 FF 98 81 03
+
+/* Enable internal analog rails (AVDD / AVEE / VGH / VGL) */
+15 00 02 05 14
+15 00 02 06 14
+15 00 02 07 14
+15 00 02 08 14
+15 00 02 09 14
+
+/* wait for power stabilization */
+78 00 00
 
 	/* PAGE 1: gamma (minimal) */
 	39 00 04 FF 98 81 01
