@@ -104,7 +104,7 @@
 };
 
 &route_dsi1 {
-	status = "okay";//wucaicheng mipi okay
+	status = "disabled";//wucaicheng mipi okay
 	connect = <&vp1_out_dsi1>;
 };
 
