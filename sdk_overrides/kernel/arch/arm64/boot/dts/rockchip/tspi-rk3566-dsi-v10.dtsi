@@ -580,13 +580,19 @@
 		dsi,format = <MIPI_DSI_FMT_RGB888>;
 		dsi,lanes  = <4>;
 		panel-init-sequence = [
-		/* Select page 0 */
-	15 00 02 30 00
+		/* Select PAGE 3 (power page) */
+	39 00 04 FF 98 81 03
 
-	/* Enable internal power */
+	/* Enable internal power / VCOM */
 	15 00 02 01 00
+	15 00 02 02 00
+	15 00 02 03 53
+	15 00 02 04 53
 
-	/* MIPI interface / lane config */
+	/* Back to PAGE 0 */
+	39 00 04 FF 98 81 00
+
+	/* MIPI interface / lane setting */
 	15 00 02 0B 13
 
 	/* Exit sleep */
