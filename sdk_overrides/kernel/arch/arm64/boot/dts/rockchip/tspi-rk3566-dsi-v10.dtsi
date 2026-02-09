@@ -580,19 +580,32 @@
 		dsi,format = <MIPI_DSI_FMT_RGB888>;
 		dsi,lanes  = <4>;
 		panel-init-sequence = [
-		/* Select PAGE 3 (power page) */
+		/* PAGE 3: power */
 	39 00 04 FF 98 81 03
-
-	/* Enable internal power / VCOM */
 	15 00 02 01 00
 	15 00 02 02 00
 	15 00 02 03 53
 	15 00 02 04 53
 
+	/* PAGE 1: gamma (minimal) */
+	39 00 04 FF 98 81 01
+	15 00 02 22 0A
+	15 00 02 31 09
+	15 00 02 40 33
+	15 00 02 53 37
+	15 00 02 55 38
+
+	/* PAGE 2: scan / resolution mapping */
+	39 00 04 FF 98 81 02
+	15 00 02 C0 00
+	15 00 02 C1 0A
+	15 00 02 C2 20
+	15 00 02 C3 24
+
 	/* Back to PAGE 0 */
 	39 00 04 FF 98 81 00
 
-	/* MIPI interface / lane setting */
+	/* Interface config */
 	15 00 02 0B 13
 
 	/* Exit sleep */
