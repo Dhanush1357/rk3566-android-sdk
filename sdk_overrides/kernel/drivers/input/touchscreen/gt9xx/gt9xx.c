@@ -62,7 +62,9 @@ static u8 bgt9110 = FALSE;
 static u8 bgt9111 = FALSE;
 static u8 bgt970 = FALSE;
 static u8 bgt910 = FALSE;
-
+static u8 gtp_change_x2y = TRUE;
+static u8 gtp_x_reverse = FALSE;
+static u8 gtp_y_reverse = TRUE;
 
 static const char *goodix_ts_name = "goodix-ts";
 static struct workqueue_struct *goodix_wq;
@@ -420,19 +422,16 @@ Output:
 *********************************************************/
 static void gtp_touch_down(struct goodix_ts_data* ts,s32 id,s32 x,s32 y,s32 w)
 {
-	if (bgt911) {
-    int tmp;
+	if (gtp_change_x2y)
+		GTP_SWAP(x, y);
 
-    /* swap X/Y because sensor is mounted rotated */
-    tmp = x;
-    x = y;
-    y = tmp;
+	if (!bgt911 && !bgt970) {
+		if (gtp_x_reverse)
+			x = ts->abs_x_max - x;
 
-    /* mirror X to match LCD orientation */
-    x = ts->abs_x_max - x;
-}
-
-
+		if (gtp_y_reverse)
+			y = ts->abs_y_max - y;
+	}
 
 #if GTP_ICS_SLOT_REPORT
     input_mt_slot(ts->input_dev, id);
@@ -1386,9 +1385,6 @@ static s32 gtp_get_info(struct goodix_ts_data *ts)
     
     ts->abs_x_max = (opr_buf[3] << 8) + opr_buf[2];
     ts->abs_y_max = (opr_buf[5] << 8) + opr_buf[4];
-
-    GTP_INFO("IC REPORTS RESOLUTION: X=%d Y=%d", ts->abs_x_max, ts->abs_y_max);
-
     
     opr_buf[0] = (u8)((GTP_REG_CONFIG_DATA+6) >> 8);
     opr_buf[1] = (u8)((GTP_REG_CONFIG_DATA+6) & 0xFF);
@@ -1455,8 +1451,6 @@ static s32 gtp_init_panel(struct goodix_ts_data *ts)
     	send_cfg_buf[0] = gtp_dat_gt11;
 		cfg_info_len[0] =  CFG_GROUP_LEN(gtp_dat_gt11);
     }
-    GTP_INFO("CFG SELECTED: GT911, cfg_len=%d", cfg_info_len[0]);
-
 
     if (bgt9110) {
 	    send_cfg_buf[0] = gtp_dat_gt9110;
@@ -1582,11 +1576,6 @@ static s32 gtp_init_panel(struct goodix_ts_data *ts)
     
     memset(&config[GTP_ADDR_LENGTH], 0, GTP_CONFIG_MAX_LENGTH);
     memcpy(&config[GTP_ADDR_LENGTH], send_cfg_buf[sensor_id], ts->gtp_cfg_len);
-
-    GTP_INFO("CFG RESOLUTION FROM HEADER: X=%d Y=%d",
-    (config[RESOLUTION_LOC + 1] << 8) | config[RESOLUTION_LOC],
-    (config[RESOLUTION_LOC + 3] << 8) | config[RESOLUTION_LOC + 2]);
-
 
 #if GTP_CUSTOM_CFG
     config[RESOLUTION_LOC]     = (u8)GTP_MAX_WIDTH;
@@ -2106,6 +2095,8 @@ static s8 gtp_request_input_dev(struct i2c_client *client,
     input_set_capability(ts->input_dev, EV_KEY, KEY_POWER);
 #endif 
 
+	if (gtp_change_x2y)
+		GTP_SWAP(ts->abs_x_max, ts->abs_y_max);
 
 #if defined(CONFIG_CHROME_PLATFORMS)
     input_set_abs_params(ts->input_dev, ABS_X, 0, ts->abs_x_max, 0, 0);
@@ -2660,11 +2651,50 @@ static int goodix_ts_probe(struct i2c_client *client, const struct i2c_device_id
     	return -EINVAL;
     }
 
-	if (val == 911) {
-    bgt911 = TRUE;
-    m89or101 = FALSE;
-}
-
+	if (val == 89) {
+		m89or101 = TRUE;
+		gtp_change_x2y = TRUE;
+		gtp_x_reverse = TRUE;
+		gtp_y_reverse = FALSE;
+	} else if (val == 101) {
+		m89or101 = FALSE;
+		gtp_change_x2y = TRUE;
+		gtp_x_reverse = TRUE;
+		gtp_y_reverse = FALSE;
+	} else if (val == 911) {
+		m89or101 = FALSE;
+		bgt911 = TRUE;
+		gtp_change_x2y = TRUE;
+		gtp_x_reverse = FALSE;
+		gtp_y_reverse = TRUE;
+	} else if (val == 9110) {
+		m89or101 = FALSE;
+		bgt9110 = TRUE;
+		gtp_change_x2y = TRUE;
+		gtp_x_reverse = TRUE;
+		gtp_y_reverse = FALSE;
+	} else if (val == 9111) {
+		m89or101 = FALSE;
+		bgt9111 = TRUE;
+		gtp_change_x2y = TRUE;
+		gtp_x_reverse = FALSE;
+		gtp_y_reverse = FALSE;
+	} else if (val == 970) {
+		m89or101 = FALSE;
+		bgt911 = FALSE;
+		bgt970 = TRUE;
+		gtp_change_x2y = FALSE;
+		gtp_x_reverse = FALSE;
+		gtp_y_reverse = TRUE;
+	} else if (val == 910) {
+		m89or101 = FALSE;
+		bgt911 = FALSE;
+		bgt970 = FALSE;
+		bgt910 = TRUE;
+		gtp_change_x2y = TRUE;
+		gtp_x_reverse = FALSE;
+		gtp_y_reverse = TRUE;
+	}
 
 	ts->tp_regulator = devm_regulator_get(&client->dev, "tp");
 	if (IS_ERR(ts->tp_regulator)) {
