@@ -569,8 +569,8 @@
 		pinctrl-0 = <&dsi1_rst_gpio>;
 		reg = <0>;
 		backlight = <&backlight>;
-		reset-delay-ms = <30>;
-		enable-delay-ms = <100>;
+		reset-delay-ms = <50>;
+		enable-delay-ms = <150>;
 		prepare-delay-ms = <20>;
 		unprepare-delay-ms = <20>;
 		disable-delay-ms = <20>;
@@ -784,7 +784,7 @@
 			15 00 02 D3 3F        
 			39 00 04 FF 98 81 00		
 			05 78 01 11
-			05 14 01 29
+			05 C8 01 29
 		];
 
 		panel-exit-sequence = [
