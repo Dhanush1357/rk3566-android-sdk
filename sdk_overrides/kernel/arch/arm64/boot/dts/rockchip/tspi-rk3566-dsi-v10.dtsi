@@ -114,7 +114,7 @@
 ************************************************************************************************************************************************/
 &dsi1 {
 	status = "okay";
-	rockchip,lane-rate = <1000>;
+	//rockchip,lane-rate = <500>;
 	dsi1_panel: panel@0 {
 		status = "okay";
 		compatible = "simple-panel-dsi";
