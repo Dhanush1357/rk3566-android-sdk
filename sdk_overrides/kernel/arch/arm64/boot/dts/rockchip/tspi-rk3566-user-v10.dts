@@ -35,33 +35,18 @@
 #include "tspi-rk3566-dsi-v10.dtsi"
 
 //【开/关】HDMI 显示屏幕配置，里面内容几乎可以不用动，如果不需要hdmi显示直接注释掉即可
-//#include "tspi-rk3566-hdmi-v10.dtsi"
+// #include "tspi-rk3566-hdmi-v10.dtsi"
 
 //【开/关】摄像头 目前视频的是ov5659
 #include "tspi-rk3566-csi-v10.dtsi"
 
 //【开/关】网口 扩展板上使用的是千兆网，不接扩展板情况下可以关闭
- #include "tspi-rk3566-gmac1-v10.dtsi"
+// #include "tspi-rk3566-gmac1-v10.dtsi"
 
 //【开/关】下方是用户定义层，所有用户修改理论上在此下方修改就好了
 / {
 	model = "lckfb tspi V10 Board";
 	compatible = "lckfb,tspi-v10", "rockchip,rk3566";
-
-	/* USB VBUS for FPC (USB_HOST1) */
-vcc5v0_usb: vcc5v0-usb {
-    compatible = "regulator-fixed";
-    regulator-name = "vcc5v0-usb";
-
-    regulator-min-microvolt = <5000000>;
-    regulator-max-microvolt = <5000000>;
-
-    enable-active-high;
-    gpio = <&gpio0 RK_PA6 GPIO_ACTIVE_HIGH>;
-
-    startup-delay-us = <100000>;
-    regulator-boot-on;
-};
 
 	rk_headset: rk-headset {
 		compatible = "rockchip_headset";
@@ -103,14 +88,7 @@ vcc5v0_usb: vcc5v0-usb {
 			rockchip,pins = <0 RK_PC5 RK_FUNC_GPIO &pcfg_pull_none>;
 		};
 	};
-	
-    usb {
-        usb_host1_vbus_en: usb-host1-vbus-en {
-            rockchip,pins = <0 RK_PA5 RK_FUNC_GPIO &pcfg_pull_none>;
-        };
-    };
 };
-
 
 //用户三色灯
 &leds {
@@ -120,10 +98,6 @@ vcc5v0_usb: vcc5v0-usb {
 //耳机插入检测，不使用扩展板情况需关闭，否则默认会检测到耳机插入
 &rk_headset {
 	status = "disabled";
-};
-
-&usb_host1_ehci {
-    vbus-supply = <&vcc5v0_usb>;
 };
 
 //用户串口3
