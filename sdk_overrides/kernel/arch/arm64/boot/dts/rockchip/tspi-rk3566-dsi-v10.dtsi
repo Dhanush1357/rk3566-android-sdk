@@ -135,22 +135,22 @@
 		dsi,lanes  = <4>;
 		panel-init-sequence = [
 			/* Unlock */
-    15 00 02 B0 5A
-    15 00 02 B1 00
+    39 00 02 B0 5A
+    39 00 02 B1 00
 
     /* Basic power page */
-    15 00 02 B1 03
-    15 00 02 BE 03
+    39  00 02 B1 03
+    39 00 02 BE 03
 
     /* Enable BIST */
-    15 00 02 2F 01
+    39 00 02 2F 01
 
     /* Exit Sleep */
     05 96 01 11
 
     /* Display ON */
     05 32 01 29
-	
+
 		];
 
 		panel-exit-sequence = [
