@@ -560,7 +560,7 @@
 ************************************************************************************************************************************************/
 &dsi1 {
 	status = "okay";
-	rockchip,lane-rate = <660>;
+	rockchip,lane-rate = <620>;
 	dsi1_panel: panel@0 {
 		status = "okay";
 		compatible = "simple-panel-dsi";
@@ -798,7 +798,7 @@
 				clock-frequency = <90000000>;
 				hactive = <1200>;
 				vactive = <1920>;
-				hfront-porch = <120>;
+				hfront-porch = <80>;
 				hsync-len = <1>;
 				hback-porch = <60>;
 				vfront-porch = <35>;
