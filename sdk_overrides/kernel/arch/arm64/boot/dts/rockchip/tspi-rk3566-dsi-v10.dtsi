@@ -17,7 +17,7 @@
  * 2023-07-21   吴才成    1378913492@qq.com   v1.0.0
  *********************************************************************/
 / {
-	backlight: backlight {
+	/*backlight: backlight {
 		compatible = "pwm-backlight";
 		pwms = <&pwm5 0 25000 0>;
 		brightness-levels = <
@@ -55,7 +55,7 @@
 			248 249 250 251 252 253 254 255
 		>;
 		default-brightness-level = <255>;
-	};
+	};*/
 };
 
 &pwm5 {
@@ -568,7 +568,7 @@
 		pinctrl-names = "default";
 		pinctrl-0 = <&dsi1_rst_gpio>;
 		reg = <0>;
-		backlight = <&backlight>;
+		//backlight = <&backlight>;
 		reset-delay-ms = <30>;
 		enable-delay-ms = <100>;
 		prepare-delay-ms = <20>;
