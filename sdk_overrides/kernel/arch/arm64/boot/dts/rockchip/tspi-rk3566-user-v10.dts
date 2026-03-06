@@ -172,7 +172,7 @@ vcc5v0_usb: vcc5v0-usb {
 	pinctrl-0 = <&spi3m1_cs0 &spi3m1_pins>;
 	pinctrl-1 = <&spi3m1_cs0 &spi3m1_pins_hs>;
 	spi_test@10 {
-		compatible ="rockchip,spi_test_bus1_cs0";
+		compatible ="spidev";
 		reg = <0>;
 		spi-max-frequency = <24000000>;
 		status = "okay";
