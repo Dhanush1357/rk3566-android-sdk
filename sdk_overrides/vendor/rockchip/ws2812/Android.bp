@@ -1,0 +1,5 @@
+cc_binary {
+    name: "ws2812_led_control",
+    srcs: ["ws2812_led_control.c"],
+    vendor: true,
+}
