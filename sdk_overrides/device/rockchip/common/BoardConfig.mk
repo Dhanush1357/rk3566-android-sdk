@@ -91,6 +91,8 @@ BOARD_KERNEL_CMDLINE := console=ttyFIQ0 androidboot.baseband=N/A androidboot.wif
 endif # BOARD_AVB_ENABLE
 
 BOARD_KERNEL_CMDLINE += loop.max_part=7
+BOARD_KERNEL_CMDLINE += storagemedia=sd
+BOARD_KERNEL_CMDLINE += androidboot.storagemedia=sd
 ROCKCHIP_RECOVERYIMAGE_CMDLINE_ARGS ?= console=ttyFIQ0 androidboot.baseband=N/A androidboot.selinux=permissive androidboot.wificountrycode=CN androidboot.veritymode=enforcing androidboot.hardware=rk30board androidboot.console=ttyFIQ0 firmware_class.path=/vendor/etc/firmware init=/init root=PARTUUID=af01642c-9b84-11e8-9b2a-234eb5e198a0
 
 ifneq ($(BOARD_SELINUX_ENFORCING), true)
@@ -134,7 +136,7 @@ TARGET_SCREEN_NO_BOOTANIMATION := true
 TARGET_COPY_OUT_VENDOR := vendor
 BOARD_VENDORIMAGE_FILE_SYSTEM_TYPE ?= ext4
 
-# default.prop & build.prop split
+# default.prop & build.prop splitPackPack
 BOARD_PROPERTY_OVERRIDES_SPLIT_ENABLED ?= true
 
 DEVICE_MANIFEST_FILE ?= device/rockchip/common/manifest.xml
