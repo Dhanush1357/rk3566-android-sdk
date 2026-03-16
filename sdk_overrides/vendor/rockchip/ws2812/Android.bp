@@ -3,3 +3,8 @@ cc_binary {
     srcs: ["ws2812_led_control.c"],
     vendor: true,
 }
+cc_binary {
+    name: "board_ctrl",
+    srcs: ["board_ctrl.c"],
+    vendor: true,
+}

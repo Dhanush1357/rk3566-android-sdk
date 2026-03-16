@@ -101,6 +101,7 @@ PRODUCT_PROPERTY_OVERRIDES += \
 #add for camera aiq2.0
 #
 PRODUCT_PACKAGES += ws2812_led_control
+PRODUCT_PACKAGES += board_ctrl
 PRODUCT_PACKAGES += \
 	rkaiq_tool_server \
 	rkaiq_3A_server
