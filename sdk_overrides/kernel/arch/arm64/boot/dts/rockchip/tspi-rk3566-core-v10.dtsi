@@ -716,7 +716,7 @@
 	supports-emmc;
 	non-removable;
 	max-frequency = <200000000>;
-	status = "okay";
+	status = "disabled";
 };
 
 //NAND闪存控制器
@@ -743,9 +743,7 @@
 &sdmmc0 {
 	max-frequency = <150000000>;
 	supports-sd;
-	supports-emmc;
 	bus-width = <4>;
-	cap-mmc-highspeed;
 	cap-sd-highspeed;
 	disable-wp;
 	sd-uhs-sdr104;
