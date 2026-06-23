@@ -1,0 +1,12 @@
+android_app {
+    name: "FFVDNexus",
+    srcs: ["src/**/*.java"],
+    resource_dirs: ["res"],
+    manifest: "AndroidManifest.xml",
+    platform_apis: true,
+    privileged: true,
+    certificate: "platform",
+    optimize: {
+        enabled: false,
+    },
+}

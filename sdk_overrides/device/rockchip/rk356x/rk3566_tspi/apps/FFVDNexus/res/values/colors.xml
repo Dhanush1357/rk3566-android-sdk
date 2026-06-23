@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#1A237E</color>
+    <color name="colorPrimaryDark">#0D1357</color>
+    <color name="colorAccent">#6B76FF</color>
+    <color name="backgroundColor">#0F0F1A</color>
+    <color name="surfaceColor">#1E1E2E</color>
+    <color name="cardColor">#252538</color>
+    <color name="textPrimary">#FFFFFF</color>
+    <color name="textSecondary">#9E9EC8</color>
+    <color name="dividerColor">#2A2A40</color>
+    <color name="iconBlue">#6B76FF</color>
+    <color name="iconGreen">#4CAF50</color>
+    <color name="iconOrange">#FF9800</color>
+    <color name="iconRed">#F44336</color>
+    <color name="iconTeal">#00BCD4</color>
+    <color name="switchThumb">#6B76FF</color>
+    <color name="switchTrackOn">#3D4299</color>
+    <color name="switchTrackOff">#3A3A55</color>
+</resources>

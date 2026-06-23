@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FFVD Nexus</string>
+
+    <!-- Categories -->
+    <string name="category_display">Display</string>
+    <string name="category_camera">Camera</string>
+    <string name="category_touch">Touch</string>
+    <string name="category_network">Network</string>
+    <string name="category_system">System</string>
+
+    <!-- Display options -->
+    <string name="display_main_rotation">Main Screen Rotation</string>
+    <string name="display_main_rotation_summary">Set display angle (0°, 90°, 180°, 270°)</string>
+    <string name="display_secondary_rotation">Secondary Screen Rotation</string>
+    <string name="display_secondary_rotation_summary">Set sub-display angle</string>
+    <string name="display_backlight">Backlight</string>
+    <string name="display_backlight_summary">Adjust screen brightness</string>
+    <string name="display_dpi">Screen DPI</string>
+    <string name="display_dpi_summary">Set display density</string>
+    <string name="display_timeout">Screen Timeout</string>
+    <string name="display_timeout_summary">Auto sleep timer</string>
+    <string name="display_hide_navbar">Hide Navigation Bar</string>
+    <string name="display_hide_navbar_summary">Remove bottom navigation bar</string>
+    <string name="display_hide_statusbar">Hide Status Bar</string>
+    <string name="display_hide_statusbar_summary">Remove top status bar</string>
+    <string name="display_disable_notification">Disable Notification Pulldown</string>
+    <string name="display_disable_notification_summary">Lock the drop-down bar</string>
+    <string name="display_hdmi_resolution">HDMI Resolution</string>
+    <string name="display_hdmi_resolution_summary">Set external display resolution</string>
+    <string name="display_screensaver">Screensaver</string>
+    <string name="display_screensaver_summary">Enable idle screensaver</string>
+    <string name="display_font_size">Font Size</string>
+    <string name="display_font_size_summary">Adjust system text size</string>
+
+    <!-- Common -->
+    <string name="reboot_required_title">Reboot Required</string>
+    <string name="reboot_required_message">This change requires a reboot to take effect. Reboot now?</string>
+    <string name="reboot_now">Reboot Now</string>
+    <string name="reboot_later">Later</string>
+    <string name="apply">Apply</string>
+    <string name="cancel">Cancel</string>
+    <string name="current_value">Current: %s</string>
+    <string name="enabled">Enabled</string>
+    <string name="disabled">Disabled</string>
+</resources>
