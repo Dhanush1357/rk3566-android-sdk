@@ -33,6 +33,18 @@
     <string name="display_font_size">Font Size</string>
     <string name="display_font_size_summary">Adjust system text size</string>
 
+    <!-- Camera options -->
+<string name="camera_back_rotation">Back Camera Rotation</string>
+<string name="camera_back_rotation_summary">Set back camera angle</string>
+<string name="camera_back_mirror">Back Camera Mirror</string>
+<string name="camera_back_mirror_summary">Flip preview horizontally</string>
+<string name="camera_sync_display">Sync Rotation with Display</string>
+<string name="camera_sync_display_summary">Camera follows screen rotation</string>
+<string name="camera_flash">Camera Flash</string>
+<string name="camera_flash_summary">Enable or disable flash</string>
+<string name="camera_reboot_note">Camera changes require reboot</string>
+
+
     <!-- Common -->
     <string name="reboot_required_title">Reboot Required</string>
     <string name="reboot_required_message">This change requires a reboot to take effect. Reboot now?</string>

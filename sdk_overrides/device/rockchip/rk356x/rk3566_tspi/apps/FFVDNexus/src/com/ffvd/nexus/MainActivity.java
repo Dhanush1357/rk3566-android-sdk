@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.ffvd.nexus.manager.DisplayManager;
 import com.ffvd.nexus.ui.DisplayFragment;
+import com.ffvd.nexus.ui.CameraFragment;
 
 public class MainActivity extends Activity {
 
@@ -71,7 +72,7 @@ public class MainActivity extends Activity {
                 break;
             case 1:
                 headerCategory.setText("Camera");
-                addComingSoon("Camera settings coming soon");
+                CameraFragment.build(this, settingsContainer);
                 break;
             case 2:
                 headerCategory.setText("Touch");
