@@ -9,4 +9,12 @@ android_app {
     optimize: {
         enabled: false,
     },
+    required: ["privapp-permissions-ffvdnexus"],
+}
+
+prebuilt_etc {
+    name: "privapp-permissions-ffvdnexus",
+    src: "permissions/privapp-permissions-ffvdnexus.xml",
+    sub_dir: "permissions",
+    system_ext_specific: false,
 }

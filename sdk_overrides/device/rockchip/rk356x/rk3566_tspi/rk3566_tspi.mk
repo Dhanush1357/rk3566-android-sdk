@@ -66,6 +66,3 @@ PRODUCT_PACKAGES_REMOVE += \
 
 # FFVD Nexus System Tool
 PRODUCT_PACKAGES += FFVDNexus
-PRODUCT_COPY_FILES += \
-    device/rockchip/rk356x/rk3566_tspi/permissions/privapp-permissions-ffvdnexus.xml:$(TARGET_COPY_OUT_SYSTEM)/etc/permissions/privapp-permissions-ffvdnexus.xml
-
