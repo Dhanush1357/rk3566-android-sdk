@@ -18,6 +18,10 @@ import android.widget.TextView;
 import com.ffvd.nexus.manager.DisplayManager;
 import com.ffvd.nexus.ui.DisplayFragment;
 import com.ffvd.nexus.ui.CameraFragment;
+import com.ffvd.nexus.ui.TouchFragment;
+import com.ffvd.nexus.ui.NetworkFragment;
+import com.ffvd.nexus.ui.AppsFragment;
+import com.ffvd.nexus.ui.SystemFragment;
 
 public class MainActivity extends Activity {
 
@@ -76,20 +80,20 @@ public class MainActivity extends Activity {
                 break;
             case 2:
                 headerCategory.setText("Touch");
-                addComingSoon("Touch settings coming soon");
+                    TouchFragment.build(this, settingsContainer);
                 break;
             case 3:
                 headerCategory.setText("Network");
-                addComingSoon("Network settings coming soon");
+                NetworkFragment.build(this, settingsContainer);
                 break;
             case 4:
                 headerCategory.setText("Apps");
-                addComingSoon("App management coming soon");
+                AppsFragment.build(this, settingsContainer);
                 break;
             case 5:
                 headerCategory.setText("System");
-                addComingSoon("System settings coming soon");
-                break;
+                SystemFragment.build(this, settingsContainer);
+break;
         }
     }
 
