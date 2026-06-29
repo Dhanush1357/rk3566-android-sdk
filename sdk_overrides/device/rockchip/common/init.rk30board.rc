@@ -231,8 +231,7 @@ on property:sys.boot_completed=1
     start gpsd
     trigger sys-boot-completed-set
     setprop vendor.boot_completed 1
-    setprop vendor.hwc.device.primary HDMI-A,TV
-    setprop vendor.hwc.device.extend DSI
+    
     
 
 # We want one opportunity per boot to enable zram, so we
