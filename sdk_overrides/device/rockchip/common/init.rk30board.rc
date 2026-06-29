@@ -223,15 +223,16 @@ on boot
     chmod 0444 /proc/pagetypeinfo
 
 on property:sys.boot_completed=1
-    write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 0
+   write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 0
     write /sys/devices/system/cpu/cpu4/cpufreq/scaling_min_freq 0
     write /sys/devices/system/cpu/cpufreq/policy0/scaling_governor interactive
     write /sys/class/devfreq/dmc/governor dmc_ondemand
     setprop persist.sys.first_booting false
-    # if data is encrypt, when start gps too early, gpsd crashed
     start gpsd
     trigger sys-boot-completed-set
     setprop vendor.boot_completed 1
+    setprop vendor.hwc.device.primary HDMI-A,TV
+    setprop vendor.hwc.device.extend DSI
     
 
 # We want one opportunity per boot to enable zram, so we
