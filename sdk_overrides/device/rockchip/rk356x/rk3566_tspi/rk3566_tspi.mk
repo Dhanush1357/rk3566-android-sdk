@@ -20,6 +20,8 @@ PRODUCT_DTBO_TEMPLATE := $(LOCAL_PATH)/dt-overlay.in
 PRODUCT_SDMMC_DEVICE := fe2b0000.dwmmc
 PRODUCT_LOCALES := en_US
 
+SF_PRIMARY_DISPLAY_ORIENTATION := 90
+
 
 include device/rockchip/common/build/rockchip/DynamicPartitions.mk
 include device/rockchip/rk356x/rk3566_tspi/BoardConfig.mk
@@ -51,7 +53,6 @@ PRODUCT_PROPERTY_OVERRIDES += ro.wifi.sleep.power.down=true
 PRODUCT_PROPERTY_OVERRIDES += persist.wifi.sleep.delay.ms=0
 PRODUCT_PROPERTY_OVERRIDES += persist.bt.power.down=true
 PRODUCT_PROPERTY_OVERRIDES += ro.vendor.hdmirotationlock=false
-PRODUCT_PROPERTY_OVERRIDES += ro.surface_flinger.primary_display_orientation=ORIENTATION_90
 
 # Disable emulator / cuttlefish / goldfish components
 PRODUCT_SOONG_NAMESPACES :=
