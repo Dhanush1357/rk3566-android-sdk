@@ -51,7 +51,7 @@ PRODUCT_PROPERTY_OVERRIDES += ro.wifi.sleep.power.down=true
 PRODUCT_PROPERTY_OVERRIDES += persist.wifi.sleep.delay.ms=0
 PRODUCT_PROPERTY_OVERRIDES += persist.bt.power.down=true
 PRODUCT_PROPERTY_OVERRIDES += ro.vendor.hdmirotationlock=false
-PRODUCT_PROPERTY_OVERRIDES += ro.surface_flinger.primary_display_orientation=1
+PRODUCT_PROPERTY_OVERRIDES += ro.surface_flinger.primary_display_orientation=ORIENTATION_90
 
 # Disable emulator / cuttlefish / goldfish components
 PRODUCT_SOONG_NAMESPACES :=
